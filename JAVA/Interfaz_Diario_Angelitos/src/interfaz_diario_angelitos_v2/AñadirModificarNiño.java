@@ -5,18 +5,49 @@
  */
 package interfaz_diario_angelitos_v2;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.swing.JFrame;
+import models.Infant;
+
 /**
  *
  * @author Usuario
  */
-public class AñadirNiño extends javax.swing.JFrame {
+public class AñadirModificarNiño extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AñadirNiño
-     */
-    public AñadirNiño() {
+    VentanaRegistro ventanaRegistro;
+    
+    
+    //Niño que se muestra en la ventana
+    Infant niñoActual;
+    String pathFotografia = "";
+    
+    public AñadirModificarNiño( VentanaRegistro ventanaRegistro ) {
         initComponents();
         setLocationRelativeTo(null);
+        //Creamos la coneccion entre esta ventana a la de registro
+        this.ventanaRegistro = ventanaRegistro;
+        //Se inicializa el niño de la ventana
+        this.niñoActual = new Infant();
+        this.niñoActual.id_inf = this.ventanaRegistro.cantRegistros;
+        //Se carga el niño que debe mostrarse 
+        this.refrescarNiño();
+    }
+    //Variable tipo opcion que nos ayuda a saber si se añade o se modifica
+    //un niño ( 0 = añadir , 1 = modificar)
+    int opc = 0;
+    
+    public void refrescarNiño(){
+        this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+        this.aNom.setText( niñoActual.name_inf );
+        this.aApell.setText( niñoActual.surnames );
+        this.aEdad.setText( String.valueOf( niñoActual.age ) );
+        this.aFechaNac.setText( niñoActual.birth_day );
+        this.aTel.setText( niñoActual.tel );
+        this.aDireccion.setText( niñoActual.dir );
+        this.aFechaReg.setText( niñoActual.reg_date );
+        //this.fotografia.setIcon( Icon() );
     }
 
     /**
@@ -34,18 +65,21 @@ public class AñadirNiño extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        aId = new javax.swing.JTextField();
         aNom = new javax.swing.JTextField();
         aApell = new javax.swing.JTextField();
         aEdad = new javax.swing.JTextField();
-        aDireccion = new javax.swing.JTextField();
+        aFechaNac = new javax.swing.JTextField();
         aTel = new javax.swing.JTextField();
+        aDireccion = new javax.swing.JTextField();
+        aFechaReg = new javax.swing.JTextField();
         aTutor = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         aGuardar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         aFoto = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        fotografia = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -65,17 +99,21 @@ public class AñadirNiño extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 10)); // NOI18N
         jLabel3.setText("[Añadir niño]");
 
+        aId.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aId.setForeground(new java.awt.Color(102, 102, 102));
+        aId.setText("ID");
+        aId.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aIdMouseClicked(evt);
+            }
+        });
+
         aNom.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         aNom.setForeground(new java.awt.Color(102, 102, 102));
         aNom.setText("Nombre...");
         aNom.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 aNomMouseClicked(evt);
-            }
-        });
-        aNom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aNomActionPerformed(evt);
             }
         });
 
@@ -87,11 +125,6 @@ public class AñadirNiño extends javax.swing.JFrame {
                 aApellMouseClicked(evt);
             }
         });
-        aApell.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aApellActionPerformed(evt);
-            }
-        });
 
         aEdad.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         aEdad.setForeground(new java.awt.Color(102, 102, 102));
@@ -101,23 +134,13 @@ public class AñadirNiño extends javax.swing.JFrame {
                 aEdadMouseClicked(evt);
             }
         });
-        aEdad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aEdadActionPerformed(evt);
-            }
-        });
 
-        aDireccion.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        aDireccion.setForeground(new java.awt.Color(102, 102, 102));
-        aDireccion.setText("Direccion...");
-        aDireccion.addMouseListener(new java.awt.event.MouseAdapter() {
+        aFechaNac.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aFechaNac.setForeground(new java.awt.Color(102, 102, 102));
+        aFechaNac.setText("Fecha de Nacimiento...");
+        aFechaNac.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                aDireccionMouseClicked(evt);
-            }
-        });
-        aDireccion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aDireccionActionPerformed(evt);
+                aFechaNacMouseClicked(evt);
             }
         });
 
@@ -129,9 +152,22 @@ public class AñadirNiño extends javax.swing.JFrame {
                 aTelMouseClicked(evt);
             }
         });
-        aTel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aTelActionPerformed(evt);
+
+        aDireccion.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aDireccion.setForeground(new java.awt.Color(102, 102, 102));
+        aDireccion.setText("Direccion...");
+        aDireccion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aDireccionMouseClicked(evt);
+            }
+        });
+
+        aFechaReg.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aFechaReg.setForeground(new java.awt.Color(102, 102, 102));
+        aFechaReg.setText("Fecha de Registro...");
+        aFechaReg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aFechaRegMouseClicked(evt);
             }
         });
 
@@ -163,24 +199,24 @@ public class AñadirNiño extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        jLabel4.setText("[Tomar Foto]");
+        fotografia.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        fotografia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/diary (1).png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(48, 48, 48))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(fotografia, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jLabel4)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(fotografia, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -188,9 +224,9 @@ public class AñadirNiño extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(4, 4, 4)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
                         .addComponent(jLabel2)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -198,83 +234,88 @@ public class AñadirNiño extends javax.swing.JFrame {
                                 .addComponent(jLabel1))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(70, 70, 70)
-                                .addComponent(jLabel3)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
+                                .addComponent(jLabel3))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(aTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(aFoto))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jLabel5))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addComponent(aGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(aFoto)
+                                .addGap(36, 36, 36)))))
+                .addGap(42, 42, 42))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(99, 99, 99)
+                        .addComponent(aTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42))))
+                        .addGap(87, 87, 87)
+                        .addComponent(jLabel6)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel5))
+                    .addComponent(aGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(105, 105, 105))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(44, 44, 44))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addGap(34, 34, 34)))
-                        .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(aFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addGap(2, 2, 2)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(aGuardar, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aTutor)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(aTutor)
+                            .addComponent(aGuardar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -321,47 +362,47 @@ public class AñadirNiño extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void aGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aGuardarActionPerformed
-    dispose();
+        //La opc 0  es para guardar el niño
+        if(this.opc == 0){
+            this.ventanaRegistro.añadirNiño(
+                    Integer.parseInt( this.aId.getText() ),
+                    Integer.parseInt( this.aEdad.getText()),
+                    this.aNom.getText(),this.aApell.getText(),this.aFechaNac.getText(),
+                    this.aDireccion.getText(),this.aTel.getText(),
+                    this.aFechaReg.getText(),this.pathFotografia
+            );
+            //La opcion 1 es para modificarlo
+        }else if(this.opc == 1){
+            
+        }
+        
+        //Se refresca la tabla del registro
+        this.ventanaRegistro.actualizarTabla();
+        //Hacemos la vista del registro visible
+        this.ventanaRegistro.setVisible(true);
+        //Ocultamos la vista del registro
+        //setVisible(false);
+        dispose();
     }//GEN-LAST:event_aGuardarActionPerformed
 
-    private void aNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aNomActionPerformed
-    
-    }//GEN-LAST:event_aNomActionPerformed
-
-    private void aApellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aApellActionPerformed
-    
-    }//GEN-LAST:event_aApellActionPerformed
-
-    private void aEdadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aEdadActionPerformed
-    
-    }//GEN-LAST:event_aEdadActionPerformed
-
-    private void aDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aDireccionActionPerformed
-    
-    }//GEN-LAST:event_aDireccionActionPerformed
-
-    private void aTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aTelActionPerformed
-    
-    }//GEN-LAST:event_aTelActionPerformed
-
-    private void aNomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNomMouseClicked
-    aNom.setText("");
-    }//GEN-LAST:event_aNomMouseClicked
+    private void aIdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aIdMouseClicked
+        aId.setText("");
+    }//GEN-LAST:event_aIdMouseClicked
 
     private void aApellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aApellMouseClicked
-    aApell.setText("");    
+        aApell.setText("");    
     }//GEN-LAST:event_aApellMouseClicked
 
     private void aEdadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aEdadMouseClicked
-    aEdad.setText(""); 
+        aEdad.setText(""); 
     }//GEN-LAST:event_aEdadMouseClicked
 
     private void aDireccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aDireccionMouseClicked
-    aDireccion.setText("");  
+        aDireccion.setText("");  
     }//GEN-LAST:event_aDireccionMouseClicked
 
     private void aTelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aTelMouseClicked
-    aTel.setText("");    
+        aTel.setText("");    
     }//GEN-LAST:event_aTelMouseClicked
 
     private void aTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aTutorActionPerformed
@@ -369,54 +410,34 @@ public class AñadirNiño extends javax.swing.JFrame {
     tutor.setVisible(true);
     }//GEN-LAST:event_aTutorActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AñadirNiño.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AñadirNiño.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AñadirNiño.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AñadirNiño.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void aNomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNomMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aNomMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AñadirNiño().setVisible(true);
-            }
-        });
-    }
+    private void aFechaRegMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aFechaRegMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aFechaRegMouseClicked
+
+    private void aFechaNacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aFechaNacMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aFechaNacMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField aApell;
     private javax.swing.JTextField aDireccion;
     private javax.swing.JTextField aEdad;
+    private javax.swing.JTextField aFechaNac;
+    private javax.swing.JTextField aFechaReg;
     private javax.swing.JButton aFoto;
     private javax.swing.JButton aGuardar;
+    private javax.swing.JTextField aId;
     private javax.swing.JTextField aNom;
     private javax.swing.JTextField aTel;
     private javax.swing.JButton aTutor;
+    private javax.swing.JLabel fotografia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
