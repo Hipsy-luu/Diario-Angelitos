@@ -32,21 +32,30 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         this.niñoActual = new Infant();
         this.niñoActual.id_inf = this.ventanaRegistro.cantRegistros;
         //Se carga el niño que debe mostrarse 
-        this.refrescarNiño();
+        this.refrescarNiño(1);
     }
     //Variable tipo opcion que nos ayuda a saber si se añade o se modifica
     //un niño ( 0 = añadir , 1 = modificar)
     int opc = 0;
     
-    public void refrescarNiño(){
-        this.aId.setText( String.valueOf( niñoActual.id_inf ) );
-        this.aNom.setText( niñoActual.name_inf );
-        this.aApell.setText( niñoActual.surnames );
-        this.aEdad.setText( String.valueOf( niñoActual.age ) );
-        this.aFechaNac.setText( niñoActual.birth_day );
-        this.aTel.setText( niñoActual.tel );
-        this.aDireccion.setText( niñoActual.dir );
-        this.aFechaReg.setText( niñoActual.reg_date );
+    public void refrescarNiño(int opc){
+        if(opc == 0){
+            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.aNom.setText( niñoActual.name_inf );
+            this.aApell.setText( niñoActual.surnames );
+            this.aEdad.setText( String.valueOf( niñoActual.age ) );
+            this.aFechaNac.setText( niñoActual.birth_day );
+            this.aTel.setText( niñoActual.tel );
+            this.aDireccion.setText( niñoActual.dir );
+            this.aFechaReg.setText( niñoActual.reg_date );
+            this.aAlergias.setText( niñoActual.allergies );
+            this.aServicoMedico.setText( niñoActual.medical_service );
+            this.aNumeroServicio.setText( niñoActual.num_service );
+        }else if(opc == 1){
+            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.aFechaReg.setText( niñoActual.reg_date );
+        }
+        
         //this.fotografia.setIcon( Icon() );
     }
 
@@ -73,6 +82,9 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         aTel = new javax.swing.JTextField();
         aDireccion = new javax.swing.JTextField();
         aFechaReg = new javax.swing.JTextField();
+        aAlergias = new javax.swing.JTextField();
+        aServicoMedico = new javax.swing.JTextField();
+        aNumeroServicio = new javax.swing.JTextField();
         aTutor = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         aGuardar = new javax.swing.JButton();
@@ -171,6 +183,38 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
             }
         });
 
+        aAlergias.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aAlergias.setForeground(new java.awt.Color(102, 102, 102));
+        aAlergias.setText("Alergias...");
+        aAlergias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aAlergiasMouseClicked(evt);
+            }
+        });
+        aAlergias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aAlergiasActionPerformed(evt);
+            }
+        });
+
+        aServicoMedico.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aServicoMedico.setForeground(new java.awt.Color(102, 102, 102));
+        aServicoMedico.setText("Servicio Medico...");
+        aServicoMedico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aServicoMedicoMouseClicked(evt);
+            }
+        });
+
+        aNumeroServicio.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        aNumeroServicio.setForeground(new java.awt.Color(102, 102, 102));
+        aNumeroServicio.setText("Numero Servicio Medico...");
+        aNumeroServicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aNumeroServicioMouseClicked(evt);
+            }
+        });
+
         aTutor.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         aTutor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-familia-hombre-mujer-40.png"))); // NOI18N
         aTutor.addActionListener(new java.awt.event.ActionListener() {
@@ -224,52 +268,60 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel3))))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel3)))
+                                .addGap(0, 269, Short.MAX_VALUE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(aFoto)
-                                .addGap(36, 36, 36)))))
-                .addGap(42, 42, 42))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addComponent(aTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(jLabel6)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel5))
-                    .addComponent(aGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(105, 105, 105))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(79, 79, 79)
+                                        .addComponent(aFoto))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(53, 53, 53)
+                                        .addComponent(aTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(78, 78, 78)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addComponent(jLabel5))
+                                            .addComponent(aGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aFechaNac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)))
+                .addGap(32, 32, 32))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,39 +336,45 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
                         .addGap(2, 2, 2)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(aFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jLabel5))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(aTutor))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(aTutor)
-                            .addComponent(aGuardar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(aGuardar)
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -367,17 +425,16 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
             this.ventanaRegistro.añadirNiño(
                     Integer.parseInt( this.aId.getText() ),
                     Integer.parseInt( this.aEdad.getText()),
-                    this.aNom.getText(),this.aApell.getText(),this.aFechaNac.getText(),
-                    this.aDireccion.getText(),this.aTel.getText(),
-                    this.aFechaReg.getText(),this.pathFotografia
+                    this.aNom.getText(),this.aApell.getText(),
+                    this.aFechaNac.getText(),this.aDireccion.getText(),
+                    this.aTel.getText(),this.aFechaReg.getText(),
+                    this.pathFotografia,this.aAlergias.getText(),
+                    this.aServicoMedico.getText(),this.aNumeroServicio.getText()
             );
             //La opcion 1 es para modificarlo
         }else if(this.opc == 1){
             
         }
-        
-        //Se refresca la tabla del registro
-        this.ventanaRegistro.actualizarTabla();
         //Hacemos la vista del registro visible
         this.ventanaRegistro.setVisible(true);
         //Ocultamos la vista del registro
@@ -422,7 +479,24 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_aFechaNacMouseClicked
 
+    private void aAlergiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aAlergiasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aAlergiasMouseClicked
+
+    private void aServicoMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aServicoMedicoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aServicoMedicoMouseClicked
+
+    private void aNumeroServicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNumeroServicioMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aNumeroServicioMouseClicked
+
+    private void aAlergiasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aAlergiasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aAlergiasActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField aAlergias;
     private javax.swing.JTextField aApell;
     private javax.swing.JTextField aDireccion;
     private javax.swing.JTextField aEdad;
@@ -432,6 +506,8 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     private javax.swing.JButton aGuardar;
     private javax.swing.JTextField aId;
     private javax.swing.JTextField aNom;
+    private javax.swing.JTextField aNumeroServicio;
+    private javax.swing.JTextField aServicoMedico;
     private javax.swing.JTextField aTel;
     private javax.swing.JButton aTutor;
     private javax.swing.JLabel fotografia;

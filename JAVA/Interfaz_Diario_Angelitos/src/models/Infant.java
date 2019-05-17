@@ -14,20 +14,27 @@ public class Infant {
     public String tel;
     public String reg_date;
     public String image_path;
+    public String allergies;
+    public String medical_service;
+    public String num_service;
+
     
     //Este contructor crea un Infante con sus atrubutos vacios
     //menos el id_inf porque aun no se sabe si se guardara
     public Infant(){
         this.id_inf = 0;
-        this.age = 0;
         this.name_inf = "";
         this.surnames = "";
+        this.age = 0;
         this.birth_day = "";
         this.dir = "";
         this.tel = "";
         this.reg_date = new SimpleDateFormat("MM/dd/yyyy").
                            format(Calendar.getInstance().getTime());
         this.image_path = "";
+        this.allergies = "";
+        this.medical_service = "";
+        this.num_service = "";
     }
     //Este contructor recibe el nombre y lo busca en la
     //Base de datos para despues llenarlo
@@ -36,7 +43,11 @@ public class Infant {
         
     }
     //Este constructor nos servira para pasar el Infante entre las ventanas
-    public Infant(int id_inf,int age,String name_inf,String surnames,String birth_day,String dir,String tel,String reg_date,String image_path){
+    public Infant(int id_inf,int age,String name_inf,String surnames,
+            String birth_day,String dir,String tel,String reg_date,
+            String image_path,String allergies,String medicalService,
+            String numService
+    ){
         this.id_inf = id_inf;
         this.age = age;
         this.name_inf = name_inf;
@@ -46,5 +57,8 @@ public class Infant {
         this.tel = tel;
         this.reg_date = reg_date;
         this.image_path = image_path;
+        this.allergies = allergies;
+        this.medical_service = medicalService;
+        this.num_service = numService;
     }
 }

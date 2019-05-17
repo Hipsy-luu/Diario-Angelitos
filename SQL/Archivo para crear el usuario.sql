@@ -1,0 +1,6 @@
+-- Se crea el usuario guarderia admin
+
+--CREATE USER guarderia_admin IDENTIFIED BY admin QUOTA UNLIMITED ON USERS DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP;
+
+-- Se le asignan los permisos
+--GRANT CREATE TABLE, CREATE SESSION, CREATE VIEW , CONNECT, RESOURCE  TO guarderia_admin;

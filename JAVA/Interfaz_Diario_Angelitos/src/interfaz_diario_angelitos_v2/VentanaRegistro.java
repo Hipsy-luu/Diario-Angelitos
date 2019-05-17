@@ -5,6 +5,7 @@
  */
 package interfaz_diario_angelitos_v2;
 
+import algoritmosApoyo.TrieAutocompletar;
 import java.lang.reflect.Array;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +27,9 @@ public class VentanaRegistro extends javax.swing.JFrame {
     //El modelo es la conexion entre la tabla de la interfaz y la 
     DefaultTableModel modeloTablaRegistro;
     Object [] fila;
+    //Este Objeto me ayuda a saber el numero indice de cada nombre en la tabla
+    //que coincide con lo que esta escrito en la barra de buscar
+    TrieAutocompletar busquedaCoincidencias;
        
     public VentanaRegistro( JFrame ventanaPrincipal ) {
         initComponents();
@@ -50,11 +54,15 @@ public class VentanaRegistro extends javax.swing.JFrame {
         //( 0,0,"lo","date","dire","333-33-33","00/00/0000");
         //Se actualiza la tabla
         this.actualizarTabla();
+        
+        this.busquedaCoincidencias = new TrieAutocompletar();
+        this.busquedaCoincidencias.diccionario.marcarUsado(123456789);
+        this.busquedaCoincidencias.test();
     }
 
     //Funciones que nos ayudaran con la interfaz
+    //Cada que se añade un niño se actualiza la tabla
     public void actualizarTabla(){
-        
         //Borramos el primer campo hasta que este vacia la tabla
         while(0<modeloTablaRegistro.getRowCount()){
             modeloTablaRegistro.removeRow(0);
@@ -68,14 +76,22 @@ public class VentanaRegistro extends javax.swing.JFrame {
         }
     }
     
-    public void añadirNiño(int id_inf,int age,String name_inf,String surnames,String birth_day,String dir,String tel,String reg_date,String image_path){
+    //Esta funcion de ejecuta cada que un niño se eañade para actualizar la lista de niños actuales
+    public void añadirNiño(int id_inf,int age,String name_inf,String surnames,
+            String birth_day,String dir,String tel,String reg_date,
+            String image_path,String allergies,String medicalService,
+            String numService
+    ){
         //System.out.println(id_inf);
         
         this.registroActual[id_inf]= new Infant(
                 id_inf ,age,name_inf,surnames,birth_day,
-                dir,tel,reg_date,image_path);
+                dir,tel,reg_date,image_path,allergies,
+                medicalService,numService);
         //Incrementamos el contador de niños que existen
         this.cantRegistros++;
+        //Se refresca la tabla del registro
+        this.actualizarTabla();
     }
     
     @SuppressWarnings("unchecked")
@@ -224,9 +240,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(close)
                         .addGap(5, 5, 5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,10 +254,10 @@ public class VentanaRegistro extends javax.swing.JFrame {
                             .addComponent(add)
                             .addComponent(edit))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)))
                     .addComponent(delete))
                 .addGap(25, 25, 25))
         );
@@ -295,7 +309,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
         this.ventanaNiño.niñoActual = new Infant();
         this.ventanaNiño.niñoActual.id_inf = this.cantRegistros;
         //Se refresca la interfaz
-        this.ventanaNiño.refrescarNiño();
+        this.ventanaNiño.refrescarNiño(1);
         //Se hace visible la ventana del niño
         this.ventanaNiño.setVisible(true);
         //Ocultamos esta ventana
