@@ -422,7 +422,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     private void aGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aGuardarActionPerformed
         //La opc 0  es para guardar el niño
         if(this.opc == 0){
-            this.ventanaRegistro.añadirNiño(
+            /*this.ventanaRegistro.añadirNiño(
                     Integer.parseInt( this.aId.getText() ),
                     Integer.parseInt( this.aEdad.getText()),
                     this.aNom.getText(),this.aApell.getText(),
@@ -430,7 +430,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
                     this.aTel.getText(),this.aFechaReg.getText(),
                     this.pathFotografia,this.aAlergias.getText(),
                     this.aServicoMedico.getText(),this.aNumeroServicio.getText()
-            );
+            );*/
             //La opcion 1 es para modificarlo
         }else if(this.opc == 1){
             

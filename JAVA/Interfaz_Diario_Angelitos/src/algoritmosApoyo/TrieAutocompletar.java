@@ -211,6 +211,9 @@ public class TrieAutocompletar {
         this.insertWord("luismi", 0);
         this.insertWord("flor", 1);
         this.insertWord("juan", 2);
+        this.insertWord("pedro", 3);
+        this.insertWord("putos", 4);
+        this.insertWord("andrea", 4);
         this.printDic( this.diccionario , "");
         
         buscarCoincidencias( "lu" );

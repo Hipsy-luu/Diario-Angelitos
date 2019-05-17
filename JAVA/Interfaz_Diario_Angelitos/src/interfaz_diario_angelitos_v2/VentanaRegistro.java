@@ -6,6 +6,7 @@
 package interfaz_diario_angelitos_v2;
 
 import algoritmosApoyo.TrieAutocompletar;
+import appis.ConexionBaseDatos;
 import java.lang.reflect.Array;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
@@ -30,7 +31,9 @@ public class VentanaRegistro extends javax.swing.JFrame {
     //Este Objeto me ayuda a saber el numero indice de cada nombre en la tabla
     //que coincide con lo que esta escrito en la barra de buscar
     TrieAutocompletar busquedaCoincidencias;
-       
+    //Conexion con la base de datos que nos puede hacer las consultas
+    ConexionBaseDatos coneccionBdd;
+    
     public VentanaRegistro( JFrame ventanaPrincipal ) {
         initComponents();
         setLocationRelativeTo(null);
@@ -51,6 +54,13 @@ public class VentanaRegistro extends javax.swing.JFrame {
         //en el modelo
         modeloTablaRegistro = (DefaultTableModel) jTablaRegistro.getModel();
         jTablaRegistro.setModel(modeloTablaRegistro);
+        
+        
+        
+        this.coneccionBdd = new ConexionBaseDatos();
+        
+        
+        
         //( 0,0,"lo","date","dire","333-33-33","00/00/0000");
         //Se actualiza la tabla
         this.actualizarTabla();
@@ -67,11 +77,11 @@ public class VentanaRegistro extends javax.swing.JFrame {
         while(0<modeloTablaRegistro.getRowCount()){
             modeloTablaRegistro.removeRow(0);
         }
-        for(int x=0;x<this.cantRegistros;x++){
-            fila[0]=registroActual[x].name_inf;
-            fila[1]=registroActual[x].age;
-            fila[2]=registroActual[x].tel;
-            fila[3]=registroActual[x].reg_date;
+        for(int x=0;x<this.coneccionBdd.cont;x++){
+            fila[0]=this.coneccionBdd.registroActual[x].name_inf;
+            fila[1]=this.coneccionBdd.registroActual[x].age;
+            fila[2]=this.coneccionBdd.registroActual[x].tel;
+            fila[3]=this.coneccionBdd.registroActual[x].reg_date;
             modeloTablaRegistro.addRow(fila); 
         }
     }
@@ -301,7 +311,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
         this.ventanaPrincipal.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_closeActionPerformed
-
+    //Funcion para abrir la ventana y ponerla en modo de añadir niño 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         //Se indica que tipo de operacion debe hacer la ventana (0 para nuevo niño)
         this.ventanaNiño.opc = 0;

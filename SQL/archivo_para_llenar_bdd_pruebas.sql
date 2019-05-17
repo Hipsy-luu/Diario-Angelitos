@@ -41,3 +41,9 @@ VALUES( '5' ,  'Rubi' , 'Benavides Rosa' , 25 , TO_DATE('15-JUN-1984', 'dd-MON-y
 INSERT INTO INFANT 
 VALUES( '6' ,  'Lucero' , 'Piña Saenz' , 25 , TO_DATE('30-JUL-1987', 'dd-MON-yyyy') , 'Calle Villa de Lira #9925, Col Campo Bello' , '614-125-25-57' 
 	, TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')), 'c:\imagenes\guarderia\intantes\6.jpg' , 'Ninguna' ,	'IMSS' , '90159215452' );
+    
+INSERT INTO INFANT 
+VALUES( '7' ,  'Omar' , 'Lopez Yawey' , 25 , TO_DATE('30-JUL-1987', 'dd-MON-yyyy') , 'Calle Villa de Lira #9925, Col Campo Bello' , '614-125-25-57' 
+	, TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')), 'c:\imagenes\guarderia\intantes\6.jpg' , 'Ninguna' ,	'IMSS' , '90159215452' );
+
+commit;
