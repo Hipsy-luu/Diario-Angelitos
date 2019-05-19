@@ -7,8 +7,12 @@ package interfaz_diario_angelitos_v2;
 
 import algoritmosApoyo.TrieAutocompletar;
 import appis.ConexionBaseDatos;
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Infant;
 
@@ -21,53 +25,33 @@ public class VentanaRegistro extends javax.swing.JFrame {
     JFrame ventanaPrincipal;
     //Ventana para añadir y modificar un niño
     AñadirModificarNiño ventanaNiño;
-    //numero de registros maximos
-    int registrosMax = 50;
-    public int cantRegistros = 0;
-    Infant[] registroActual;
     //El modelo es la conexion entre la tabla de la interfaz y la 
     DefaultTableModel modeloTablaRegistro;
     Object [] fila;
-    //Este Objeto me ayuda a saber el numero indice de cada nombre en la tabla
-    //que coincide con lo que esta escrito en la barra de buscar
-    TrieAutocompletar busquedaCoincidencias;
     //Conexion con la base de datos que nos puede hacer las consultas
     ConexionBaseDatos coneccionBdd;
     
     public VentanaRegistro( JFrame ventanaPrincipal ) {
         initComponents();
         setLocationRelativeTo(null);
-        //Etiquetas extra que salen cuando se pasa el mouse
-        btnRegistroCompleto.setToolTipText("Buscar niño");
-        add.setToolTipText("Añadir niño");
-        edit.setToolTipText("Editar niño");
-        delete.setToolTipText("Borrar niño");
         //Se crea la coneccion entre la ventana principal y esta
         this.ventanaPrincipal = ventanaPrincipal;
         //Se crea una nueva ventana que contiene la ventana del niño
         this.ventanaNiño= new AñadirModificarNiño( getFrame() );
-        //Inicializamos la tabla
-        this.registroActual = new Infant[this.registrosMax];
+        
         //Variable para añadir los elementos a la tabla
-        fila=new Object[4];
+        fila=new Object[5];
         //Conectamos la tabla de la interfaz con la tabla que tenemos 
         //en el modelo
         modeloTablaRegistro = (DefaultTableModel) jTablaRegistro.getModel();
         jTablaRegistro.setModel(modeloTablaRegistro);
         
         
+        //Coneccion a la base de datos
+        this.coneccionBdd = new ConexionBaseDatos(getFrame());
         
-        this.coneccionBdd = new ConexionBaseDatos();
-        
-        
-        
-        //( 0,0,"lo","date","dire","333-33-33","00/00/0000");
-        //Se actualiza la tabla
+        //Se actualiza la tabla siempre que se haga algo en la tabla de Infantes
         this.actualizarTabla();
-        
-        this.busquedaCoincidencias = new TrieAutocompletar();
-        this.busquedaCoincidencias.diccionario.marcarUsado(123456789);
-        this.busquedaCoincidencias.test();
     }
 
     //Funciones que nos ayudaran con la interfaz
@@ -77,31 +61,14 @@ public class VentanaRegistro extends javax.swing.JFrame {
         while(0<modeloTablaRegistro.getRowCount()){
             modeloTablaRegistro.removeRow(0);
         }
-        for(int x=0;x<this.coneccionBdd.cont;x++){
-            fila[0]=this.coneccionBdd.registroActual[x].name_inf;
-            fila[1]=this.coneccionBdd.registroActual[x].age;
-            fila[2]=this.coneccionBdd.registroActual[x].tel;
-            fila[3]=this.coneccionBdd.registroActual[x].reg_date;
+        for(int x=0;x<this.coneccionBdd.cantRegistros;x++){
+            fila[0]=this.coneccionBdd.registroActual[x].id_inf;
+            fila[1]=this.coneccionBdd.registroActual[x].name_inf + " " +  this.coneccionBdd.registroActual[x].surnames;
+            fila[2]=this.coneccionBdd.registroActual[x].age;
+            fila[3]=this.coneccionBdd.registroActual[x].tel;
+            fila[4]=this.coneccionBdd.registroActual[x].reg_date;
             modeloTablaRegistro.addRow(fila); 
         }
-    }
-    
-    //Esta funcion de ejecuta cada que un niño se eañade para actualizar la lista de niños actuales
-    public void añadirNiño(int id_inf,int age,String name_inf,String surnames,
-            String birth_day,String dir,String tel,String reg_date,
-            String image_path,String allergies,String medicalService,
-            String numService
-    ){
-        //System.out.println(id_inf);
-        
-        this.registroActual[id_inf]= new Infant(
-                id_inf ,age,name_inf,surnames,birth_day,
-                dir,tel,reg_date,image_path,allergies,
-                medicalService,numService);
-        //Incrementamos el contador de niños que existen
-        this.cantRegistros++;
-        //Se refresca la tabla del registro
-        this.actualizarTabla();
     }
     
     @SuppressWarnings("unchecked")
@@ -132,6 +99,11 @@ public class VentanaRegistro extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         btnRegistroCompleto.setText("Registro Completo");
+        btnRegistroCompleto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistroCompletoActionPerformed(evt);
+            }
+        });
 
         edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-editar-45.png"))); // NOI18N
         edit.addActionListener(new java.awt.event.ActionListener() {
@@ -151,6 +123,11 @@ public class VentanaRegistro extends javax.swing.JFrame {
         jLabel2.setText("Editar");
 
         delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-45.png"))); // NOI18N
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel3.setText("Borrar");
@@ -174,26 +151,31 @@ public class VentanaRegistro extends javax.swing.JFrame {
                 rBuscarMouseClicked(evt);
             }
         });
+        rBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                rBuscarKeyTyped(evt);
+            }
+        });
 
         jTablaRegistro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Edad", "Telefono", "Fecha de Registro"
+                "ID", "Nombre", "Edad", "Telefono", "Fecha de Registro"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -317,9 +299,13 @@ public class VentanaRegistro extends javax.swing.JFrame {
         this.ventanaNiño.opc = 0;
         //Se carga un nuevo niño en la interfaz
         this.ventanaNiño.niñoActual = new Infant();
-        this.ventanaNiño.niñoActual.id_inf = this.cantRegistros;
-        //Se refresca la interfaz
-        this.ventanaNiño.refrescarNiño(1);
+        this.ventanaNiño.niñoActual.id_inf = this.coneccionBdd.sig_id_inf+1;
+        try {
+            //Se refresca la interfaz
+            this.ventanaNiño.refrescarNiño();
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //Se hace visible la ventana del niño
         this.ventanaNiño.setVisible(true);
         //Ocultamos esta ventana
@@ -327,17 +313,81 @@ public class VentanaRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_addActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        //Se indica que tipo de operacion debe hacer la ventana (0 para nuevo niño)
+        //Se indica que tipo de operacion debe hacer la ventana (0 para nuevo niño 1 para modificar)
         this.ventanaNiño.opc = 1;
-        //Se hace visible la ventana del niño
-        this.ventanaNiño.setVisible(true);
-        //Ocultamos esta ventana
-        setVisible(false);
+        try{
+            int indexSelected = (int) this.jTablaRegistro.getValueAt(this.jTablaRegistro.getSelectedRow(),0);
+            //Se cargan los datos del niño seleccionado
+           this.ventanaNiño.niñoActual = this.coneccionBdd.registroActual[indexSelected];
+           try {
+               //Se actualiza en la interfaz el niño cargado en la ventana
+               this.ventanaNiño.refrescarNiño();
+           } catch (IOException ex) {
+               Logger.getLogger(VentanaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           //Se hace visible la ventana del niño
+           this.ventanaNiño.setVisible(true);
+           //Ocultamos esta ventana
+           setVisible(false);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this.getFrame(), "Seleccione un niño por favor");
+        }
     }//GEN-LAST:event_editActionPerformed
 
     private void rBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rBuscarMouseClicked
     rBuscar.setText("");
     }//GEN-LAST:event_rBuscarMouseClicked
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        try{
+            //Se saca el id del niño seleccionado y se elimina
+            int indexSelected = (int) this.jTablaRegistro.getValueAt(this.jTablaRegistro.getSelectedRow(),0);
+            this.coneccionBdd.eliminarNiño( Integer.toString(indexSelected) );
+           //Se actualiza la vista de la tabla
+            this.actualizarTabla();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this.getFrame(), "Seleccione un niño por favor");
+        }
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void rBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rBuscarKeyTyped
+        if(this.rBuscar.getText()!=""){
+            if(this.coneccionBdd.cantRegistros < 1 ){
+                JOptionPane.showMessageDialog(null, "Registro de niños Vacio");
+                this.rBuscar.setText("");
+            }else{
+                this.coneccionBdd.dicionarioNombresNiños.buscarCoincidencias( this.rBuscar.getText() );
+                //Borramos el primer campo hasta que este vacia la tabla
+                while(0<modeloTablaRegistro.getRowCount()){
+                    modeloTablaRegistro.removeRow(0);
+                }
+                for(int x=0;x<this.coneccionBdd.dicionarioNombresNiños.cont;x++){
+                    fila[0]=this.coneccionBdd.registroActual[
+                            this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ].id_inf;
+                    fila[1]=this.coneccionBdd.registroActual[
+                            this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ].name_inf + " " +  this.coneccionBdd.registroActual[x].surnames;
+                    fila[2]=this.coneccionBdd.registroActual[
+                            this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ].age;
+                    fila[3]=this.coneccionBdd.registroActual[
+                            this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ].tel;
+                    fila[4]=this.coneccionBdd.registroActual[
+                            this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ].reg_date;
+                    modeloTablaRegistro.addRow(fila); 
+                }
+            }
+        }else if(this.rBuscar.getText()==""){
+            this.actualizarTabla();
+        }
+    }//GEN-LAST:event_rBuscarKeyTyped
+
+    private void btnRegistroCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroCompletoActionPerformed
+        this.actualizarTabla();
+    }//GEN-LAST:event_btnRegistroCompletoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;

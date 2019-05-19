@@ -7,9 +7,9 @@ public class TrieAutocompletar {
     
     //Lo usamos para contar cuantas coincidencias encuentra y ponemos en cero cada ves que lo usamos
     //para que cada vez que encuentre una con ese numero guardarlo en el arreglo string coincidencias[MAXTAM]
-    int cont=0;
+    public int cont=0;
     //Aqui guardamos las palabras que encontramos en las coincidencias (maximo 500)
-    Coinciencia coincidencias[];
+    public Coinciencia coincidencias[];
     //Se guarda el diccionario actual con su indice a cada palabra
     String diccionarioActual[] = new String[500];
 
@@ -121,11 +121,11 @@ public class TrieAutocompletar {
         this.coincidencias = new Coinciencia[500];
         this.cont=0;//Este contador nos indica cuantas coincidencias encontramos
 	//Se le debe pasar un espacio vacio la primera vez
-        printCoincidencias( this.diccionario  , palabraAutocompletar , "" );
-        System.out.println("\nCoincidencias : "+cont);
+        buscarCoincidencias( this.diccionario  , palabraAutocompletar , "" );
+        //System.out.println("\nCoincidencias : "+cont);
     }
     
-    public void printCoincidencias(Letra nodo, String palabraAutocompletar , String palabra ){
+    public void buscarCoincidencias(Letra nodo, String palabraAutocompletar , String palabra ){
         if( nodo.finalPalabra == true){
             //Si encuentra la palabraAutocompletar en la
             // lista  de palabra1  la funcion strstr() devuelve la posicion y si no NULL
@@ -133,7 +133,7 @@ public class TrieAutocompletar {
                 //Se crea una nueva instancia del objeto para llenar el array
                 Coinciencia aux = new Coinciencia(palabra,nodo.indice);
                 this.coincidencias[cont] = aux;
-                System.out.println("\t"+cont+"- "+palabra);
+                //System.out.println("\t"+cont+"- "+palabra);
                 cont++;
             }
             if( sinHijo(nodo) )
@@ -144,7 +144,7 @@ public class TrieAutocompletar {
             if ( nodo.ABC[index] != null ) {
                 char caracter = (char)( index + 'a' ) ;
                 palabra = palabra + caracter ;
-                printCoincidencias( nodo.ABC[index] , palabraAutocompletar , palabra );
+                buscarCoincidencias( nodo.ABC[index] , palabraAutocompletar , palabra );
                 if(palabra.length()==1){
                     palabra="";
                 }else{

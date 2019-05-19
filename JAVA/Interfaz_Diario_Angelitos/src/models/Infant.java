@@ -29,9 +29,9 @@ public class Infant {
         this.birth_day = "";
         this.dir = "";
         this.tel = "";
-        this.reg_date = new SimpleDateFormat("MM/dd/yyyy").
+        this.reg_date = new SimpleDateFormat("dd-MMM-yyyy").
                            format(Calendar.getInstance().getTime());
-        this.image_path = "";
+        this.image_path = "C:/estancia_imagenes/default.png";
         this.allergies = "";
         this.medical_service = "";
         this.num_service = "";
@@ -52,10 +52,10 @@ public class Infant {
         this.age = age;
         this.name_inf = name_inf;
         this.surnames = surnames;
-        this.birth_day = birth_day;
+        this.birth_day = new String (birth_day.substring(0, birth_day.length() - 11));
         this.dir = dir;
         this.tel = tel;
-        this.reg_date = reg_date;
+        this.reg_date = new String (reg_date.substring(0, reg_date.length() - 11));
         this.image_path = image_path;
         this.allergies = allergies;
         this.medical_service = medicalService;

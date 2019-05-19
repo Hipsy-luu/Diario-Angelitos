@@ -1,8 +1,8 @@
 package algoritmosApoyo;
 
 public class Coinciencia {
-    String nombre;
-    int index;
+    public String nombre;
+    public int index;
     
     Coinciencia(){
         this.nombre = "";
