@@ -21,7 +21,7 @@ import models.Infant;
 public class AñadirModificarNiño extends javax.swing.JFrame {
 
     VentanaRegistro ventanaRegistro;
-    
+    AñadirModificarTutor ventanaTutor;
     
     //Niño que se muestra en la ventana
     Infant niñoActual;
@@ -30,6 +30,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     public AñadirModificarNiño( VentanaRegistro ventanaRegistro ) {
         initComponents();
         setLocationRelativeTo(null);
+        this.ventanaTutor = new AñadirModificarTutor( this.getFrame());
         //Creamos la coneccion entre esta ventana a la de registro
         this.ventanaRegistro = ventanaRegistro;
         //Se inicializa el niño de la ventana
@@ -38,43 +39,6 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     //Variable tipo opcion que nos ayuda a saber si se añade o se modifica
     //un niño ( 0 = añadir , 1 = modificar)
     public int opc = 0;
-    
-    public void refrescarNiño() throws IOException{
-        this.actualizarTitulo();
-        File f = new File(niñoActual.image_path);
-        BufferedImage folderImage = ImageIO.read(f);
-        if(this.opc == 0){
-            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
-            this.aNom.setText( "Nombre...");
-            this.aApell.setText( "Apellido..." );
-            this.aEdad.setText( String.valueOf( niñoActual.age ) );
-            this.aFechaNac.setText( "Formato de la Fecha : yyyy-mm-dd" );
-            this.aTel.setText( "Telefono..." );
-            this.aDireccion.setText( "Direccion..." );
-            this.aFechaReg.setText( "Formato de la Fecha : yyyy-mm-dd" );
-            this.aAlergias.setText( "Alergias..." );
-            this.aServicoMedico.setText( "Servicio Medico..." );
-            this.aNumeroServicio.setText( "Num. Servicio Med..." );
-            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
-            this.pathFotografia = niñoActual.image_path;;
-        }else if(this.opc == 1){
-            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
-            this.aNom.setText( niñoActual.name_inf );
-            this.aApell.setText( niñoActual.surnames );
-            this.aEdad.setText( String.valueOf( niñoActual.age ) );
-            this.aFechaNac.setText( niñoActual.birth_day );
-            this.aTel.setText( niñoActual.tel );
-            this.aDireccion.setText( niñoActual.dir );
-            this.aFechaReg.setText( niñoActual.reg_date );
-            this.aAlergias.setText( niñoActual.allergies );
-            this.aServicoMedico.setText( niñoActual.medical_service );
-            this.aNumeroServicio.setText( niñoActual.num_service );
-            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
-            this.pathFotografia = niñoActual.image_path;;
-        }
-        
-        //this.fotografia.setIcon( Icon() );
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -445,6 +409,46 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     private AñadirModificarNiño getFrame(){
         return this;
     }
+    
+    
+    
+    public void refrescarNiño() throws IOException{
+        this.actualizarTitulo();
+        File f = new File(niñoActual.image_path);
+        BufferedImage folderImage = ImageIO.read(f);
+        if(this.opc == 0){
+            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.aNom.setText( "Nombre...");
+            this.aApell.setText( "Apellido..." );
+            this.aEdad.setText( String.valueOf( niñoActual.age ) );
+            this.aFechaNac.setText( "Formato de la Fecha : yyyy-mm-dd" );
+            this.aTel.setText( "Telefono..." );
+            this.aDireccion.setText( "Direccion..." );
+            this.aFechaReg.setText( "Formato de la Fecha : yyyy-mm-dd" );
+            this.aAlergias.setText( "Alergias..." );
+            this.aServicoMedico.setText( "Servicio Medico..." );
+            this.aNumeroServicio.setText( "Num. Servicio Med..." );
+            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
+            this.pathFotografia = niñoActual.image_path;;
+        }else if(this.opc == 1){
+            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.aNom.setText( niñoActual.name_inf );
+            this.aApell.setText( niñoActual.surnames );
+            this.aEdad.setText( String.valueOf( niñoActual.age ) );
+            this.aFechaNac.setText( niñoActual.birth_day );
+            this.aTel.setText( niñoActual.tel );
+            this.aDireccion.setText( niñoActual.dir );
+            this.aFechaReg.setText( niñoActual.reg_date );
+            this.aAlergias.setText( niñoActual.allergies );
+            this.aServicoMedico.setText( niñoActual.medical_service );
+            this.aNumeroServicio.setText( niñoActual.num_service );
+            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
+            this.pathFotografia = niñoActual.image_path;;
+        }
+        
+        //this.fotografia.setIcon( Icon() );
+    }
+    
     private void aGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aGuardarActionPerformed
         //La opc 0  es para insertar el niño nuevo en la tabla INFANT
         if(this.opc == 0){
@@ -505,8 +509,9 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     }//GEN-LAST:event_aTelMouseClicked
 
     private void aTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aTutorActionPerformed
-        AñadirTutor tutor = new AñadirTutor();
-        tutor.setVisible(true);
+        this.ventanaTutor.cargarVista( String.valueOf(this.niñoActual.id_inf) );
+        this.ventanaTutor.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_aTutorActionPerformed
 
     private void aNomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNomMouseClicked

@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import javax.swing.JOptionPane;
 import models.Infant;
+import models.Tutor;
+import models.TutorsInfant;
 //import librerias.oracle.jdbc.driver.OracleDriver;
 
 public class ConexionBaseDatos {
@@ -108,8 +110,8 @@ public class ConexionBaseDatos {
         try {//'"+  +"'
             this.stmnt.executeQuery(
                     "INSERT INTO INFANT VALUES( '" + id_inf + "','" + name_inf + "','" + surnames + "','"
-                    + age + "',TO_DATE('" + birth_day + "', 'dd-MON-yyyy') ,'" + dir + "','"
-                    + tel + "',TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')),'" + image_path + "','"
+                    + age + "',TO_DATE('" + birth_day + "', 'YYYY-MM-DD') ,'" + dir + "','"
+                    + tel + "',TO_DATE('" + reg_date + "', 'YYYY-MM-DD') ,'" + image_path + "','"
                     + allergies + "','" + medicalService + "','" + numService + "')"
             );
             //si se logra insertar un niño se actualiza el registro de niños actual 
@@ -153,6 +155,100 @@ public class ConexionBaseDatos {
             this.stmnt.executeQuery(comando);
             //si se logra eliminar un niño se actualiza el registro de niños actual 
             this.obtenerRegistroInfantes();
+            this.exitoConsulta = true;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public TutorsInfant listaTutoresInfante(String id_inf){
+        TutorsInfant tutoresInfante = new TutorsInfant();
+        try{
+            ResultSet rs = this.stmnt.executeQuery(
+                    "SELECT "
+                            + "t.id_tut , t.name_tut , t.surnames ,t.age , t.tel , t.dir , t.email , t.work_place "+
+                    "from INF_TUT i "+
+                    "join TUTORS t "+
+                    "on(i.id_tut = t.id_tut) "+
+                    "where i.id_inf = "+id_inf+" "+
+                    "ORDER BY t.id_tut  ASC "
+            );
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cols = rsmd.getColumnCount();
+            //Con esto controlo que lugar voy del arreglo de infantes
+            tutoresInfante.numTutores = 0;
+            //Variable para hacer el parseo de objeto a String en una linea
+            String[] resultados = new String[cols];
+            Object[] obj = new Object[cols];
+            while( rs.next() && tutoresInfante.numTutores < 4) {
+                for (int i = 0; i < cols; i++) {
+                    obj[i] = rs.getObject(i + 1);
+                    resultados[i] = new String(obj[i].toString());
+                }
+                //Se crea un nuevo infante y se le pasa a su respectiva posicion
+                tutoresInfante.tutoresNiño[tutoresInfante.numTutores] = new Tutor(
+                        Integer.parseInt(resultados[0]), resultados[1] ,
+                        resultados[2], Integer.parseInt( resultados[3]) , resultados[4], 
+                        resultados[5], resultados[6],resultados[7]
+                );
+                //Incrementamos el contador para guardarlo en una nueva casilla
+                //Incrementamos el contador de tutores que existen
+                tutoresInfante.numTutores++;
+            }
+            this.exitoConsulta = true;
+            tutoresInfante.id_inf=id_inf;
+            return tutoresInfante;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+            return tutoresInfante;
+        }
+    }
+    
+    public void insertarRelacionTutInf(String id_inf ){
+        try {
+            String comando = 
+                "INSERT INTO INF_TUT ( id_rela_tut_inf , id_inf , id_tut )"+
+                "VALUES( nin_tut_id_seq.nextval , "+id_inf+" , tut_id_seq.currval )";
+            ;
+            this.stmnt.executeQuery(comando);
+            this.exitoConsulta = true;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public void insertarTutor(String id_inf, String name_tut,String surnames,String age,
+            String tel,String dir,String email,String work_place){
+        try {
+            String comando = 
+                "INSERT INTO TUTORS ( id_tut , name_tut , surnames ,age , tel , dir , email , work_place )"+
+                "VALUES( tut_id_seq.nextval , '"+name_tut+"','"+surnames+"',"+age+",'"+tel+"','"+dir+"','"+email+"','"+work_place+"')";
+            this.stmnt.executeQuery(comando);
+            this.insertarRelacionTutInf(id_inf);
+            this.exitoConsulta = true;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public void modificarTutor( String id_tut , String name_tut,String surnames,String age,
+            String tel,String dir,String email,String work_place){
+        try {
+            String comando = 
+                    "UPDATE TUTORS SET name_tut='"+name_tut+"' ,"+
+                    " surnames='"+surnames+"' , age="+age+" ,"+
+                    " tel='"+tel+"' , dir='"+dir+"' ,"+
+                    " email='"+email+"' , work_place='"+work_place+
+                    "'  WHERE id_tut = "+id_tut;
+            this.stmnt.executeQuery(comando);
             this.exitoConsulta = true;
         } catch (Exception e) {
             System.err.println(e);
