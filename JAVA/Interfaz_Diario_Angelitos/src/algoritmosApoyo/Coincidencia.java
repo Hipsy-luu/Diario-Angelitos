@@ -1,15 +1,15 @@
 package algoritmosApoyo;
 
-public class Coinciencia {
+public class Coincidencia {
     public String nombre;
     public int index;
     
-    Coinciencia(){
+    Coincidencia(){
         this.nombre = "";
         this.index = 0;
     }
     
-    Coinciencia(String nombre, int index){
+    Coincidencia(String nombre, int index){
         this.nombre = nombre;
         this.index = index;
     }

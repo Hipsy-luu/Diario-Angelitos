@@ -9,13 +9,13 @@ public class TrieAutocompletar {
     //para que cada vez que encuentre una con ese numero guardarlo en el arreglo string coincidencias[MAXTAM]
     public int cont=0;
     //Aqui guardamos las palabras que encontramos en las coincidencias (maximo 500)
-    public Coinciencia coincidencias[];
+    public Coincidencia coincidencias[];
     //Se guarda el diccionario actual con su indice a cada palabra
     String diccionarioActual[] = new String[500];
 
     public TrieAutocompletar() {
         this.diccionario = new Letra();
-        this.coincidencias = new Coinciencia[500];
+        this.coincidencias = new Coincidencia[500];
     }
     
     public Letra nuevaLetra(int indice){
@@ -118,7 +118,7 @@ public class TrieAutocompletar {
     //se encuentra en la palabra encontrada imprime el String que llevamos acarreando
     public void buscarCoincidencias( String palabraAutocompletar ){
         //Se reinicia el arreglo con coincidencias
-        this.coincidencias = new Coinciencia[500];
+        this.coincidencias = new Coincidencia[500];
         this.cont=0;//Este contador nos indica cuantas coincidencias encontramos
 	//Se le debe pasar un espacio vacio la primera vez
         buscarCoincidencias( this.diccionario  , palabraAutocompletar , "" );
@@ -131,7 +131,7 @@ public class TrieAutocompletar {
             // lista  de palabra1  la funcion strstr() devuelve la posicion y si no NULL
             if( palabra.contains( palabraAutocompletar) ){
                 //Se crea una nueva instancia del objeto para llenar el array
-                Coinciencia aux = new Coinciencia(palabra,nodo.indice);
+                Coincidencia aux = new Coincidencia(palabra,nodo.indice);
                 this.coincidencias[cont] = aux;
                 //System.out.println("\t"+cont+"- "+palabra);
                 cont++;
