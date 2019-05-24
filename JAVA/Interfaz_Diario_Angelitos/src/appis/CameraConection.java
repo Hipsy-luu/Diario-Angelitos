@@ -56,9 +56,9 @@ public class CameraConection {
                             Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
 
                             BufferedImage buff = (BufferedImage) im;
-                            Graphics g=jPanel1.getGraphics();
+                            //Graphics g=jPanel1.getGraphics();
 
-                            if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -150 , 0, 0, buff.getWidth(), buff.getHeight(), null))
+                            //if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -150 , 0, 0, buff.getWidth(), buff.getHeight(), null))
 
                             if(runnable == false)
                             {
