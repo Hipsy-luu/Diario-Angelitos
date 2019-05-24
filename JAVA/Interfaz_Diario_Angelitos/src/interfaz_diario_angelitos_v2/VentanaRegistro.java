@@ -33,7 +33,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     
     public VentanaRegistro( JFrame ventanaPrincipal ) {
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null);//Hace que salga la ventana en medio
         //Se crea la coneccion entre la ventana principal y esta
         this.ventanaPrincipal = ventanaPrincipal;
         //Se crea una nueva ventana que contiene la ventana del niño
@@ -49,7 +49,8 @@ public class VentanaRegistro extends javax.swing.JFrame {
         
         //Coneccion a la base de datos
         this.coneccionBdd = new ConexionBaseDatos(getFrame());
-        
+        //Se actualizan los botones principales
+        this.cambiarBotones(1);
         //Se actualiza la tabla siempre que se haga algo en la tabla de Infantes
         this.actualizarTabla();
     }
@@ -57,6 +58,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     //Funciones que nos ayudaran con la interfaz
     //Cada que se añade un niño se actualiza la tabla
     public void actualizarTabla(){
+        //this.coneccionBdd.obtenerRegistroInfantes();
         //Borramos el primer campo hasta que este vacia la tabla
         while(0<modeloTablaRegistro.getRowCount()){
             modeloTablaRegistro.removeRow(0);
@@ -71,6 +73,36 @@ public class VentanaRegistro extends javax.swing.JFrame {
         }
     }
     
+    public void cambiarBotones(int opc){
+        if(opc==0){
+            this.add.setVisible(false);
+            this.edit.setVisible(false);
+            this.delete.setVisible(false);
+            this.addLbl.setVisible(false);
+            this.editLbl.setVisible(false);
+            this.deleteLbl.setVisible(false);
+            this.close.setVisible(false);
+            
+            this.addHermano.setVisible(true);
+            this.cancelarAñadirHermano.setVisible(true);
+            this.addHermanoLbl.setVisible(true);
+            this.cancelarAñadirHermanoLbl.setVisible(true);
+        }else if(opc==1){
+            this.add.setVisible(true);
+            this.edit.setVisible(true);
+            this.delete.setVisible(true);
+            this.addLbl.setVisible(true);
+            this.editLbl.setVisible(true);
+            this.deleteLbl.setVisible(true);
+            this.close.setVisible(true);
+            
+            this.addHermano.setVisible(false);
+            this.cancelarAñadirHermano.setVisible(false);
+            this.addHermanoLbl.setVisible(false);
+            this.cancelarAñadirHermanoLbl.setVisible(false);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -80,15 +112,19 @@ public class VentanaRegistro extends javax.swing.JFrame {
         btnRegistroCompleto = new javax.swing.JButton();
         edit = new javax.swing.JButton();
         add = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        editLbl = new javax.swing.JLabel();
         delete = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        deleteLbl = new javax.swing.JLabel();
+        addLbl = new javax.swing.JLabel();
         close = new javax.swing.JButton();
         rBuscar = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTablaRegistro = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
+        addHermano = new javax.swing.JButton();
+        cancelarAñadirHermano = new javax.swing.JButton();
+        addHermanoLbl = new javax.swing.JLabel();
+        cancelarAñadirHermanoLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -119,8 +155,8 @@ public class VentanaRegistro extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jLabel2.setText("Editar");
+        editLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        editLbl.setText("Editar");
 
         delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-45.png"))); // NOI18N
         delete.addActionListener(new java.awt.event.ActionListener() {
@@ -129,11 +165,11 @@ public class VentanaRegistro extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jLabel3.setText("Borrar");
+        deleteLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        deleteLbl.setText("Borrar");
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jLabel1.setText("Añadir niño");
+        addLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        addLbl.setText("Añadir niño");
 
         close.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         close.setText("Cerrar");
@@ -187,6 +223,26 @@ public class VentanaRegistro extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 20)); // NOI18N
         jLabel4.setText("Registro");
 
+        addHermano.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-niños-45.png"))); // NOI18N
+        addHermano.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addHermanoActionPerformed(evt);
+            }
+        });
+
+        cancelarAñadirHermano.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-45.png"))); // NOI18N
+        cancelarAñadirHermano.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarAñadirHermanoActionPerformed(evt);
+            }
+        });
+
+        addHermanoLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        addHermanoLbl.setText("Añadir Hermano");
+
+        cancelarAñadirHermanoLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        cancelarAñadirHermanoLbl.setText("Cancelar Hermano");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -212,16 +268,28 @@ public class VentanaRegistro extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addLbl))
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(142, 142, 142)
+                            .addComponent(addHermanoLbl)
+                            .addComponent(addHermano, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(editLbl)
+                            .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cancelarAñadirHermanoLbl)
+                                .addGap(28, 28, 28))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(cancelarAñadirHermano, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(47, 47, 47)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
+                            .addComponent(deleteLbl))
                         .addGap(25, 25, 25))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -239,18 +307,29 @@ public class VentanaRegistro extends javax.swing.JFrame {
                     .addComponent(btnRegistroCompleto))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(add)
-                            .addComponent(edit))
+                            .addComponent(addHermano)
+                            .addComponent(cancelarAñadirHermano))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(addHermanoLbl))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cancelarAñadirHermanoLbl))))
+                    .addComponent(delete)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(edit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
-                    .addComponent(delete))
+                            .addComponent(deleteLbl)
+                            .addComponent(editLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addLbl))))
                 .addGap(25, 25, 25))
         );
 
@@ -335,7 +414,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_editActionPerformed
 
     private void rBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rBuscarMouseClicked
-    rBuscar.setText("");
+        rBuscar.setText("");
     }//GEN-LAST:event_rBuscarMouseClicked
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -366,8 +445,10 @@ public class VentanaRegistro extends javax.swing.JFrame {
                             this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
                             ].id_inf;
                     fila[1]=this.coneccionBdd.registroActual[
-                            this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
-                            ].name_inf + " " +  this.coneccionBdd.registroActual[x].surnames;
+                                this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ].name_inf + " " +this.coneccionBdd.registroActual[
+                                this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
+                            ];
                     fila[2]=this.coneccionBdd.registroActual[
                             this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
                             ].age;
@@ -389,15 +470,49 @@ public class VentanaRegistro extends javax.swing.JFrame {
         this.actualizarTabla();
     }//GEN-LAST:event_btnRegistroCompletoActionPerformed
 
+    private void addHermanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHermanoActionPerformed
+        if(
+            this.coneccionBdd.registroActual[this.jTablaRegistro.getSelectedRow()].id_inf
+            == this.ventanaNiño.niñoActual.id_inf
+        ){
+            JOptionPane.showMessageDialog(null, "No se puede añadir el mismo como su hermano");
+        }else{
+            this.coneccionBdd.añadirHermano(
+                String.valueOf( this.ventanaNiño.niñoActual.id_inf)  ,
+                String.valueOf( this.coneccionBdd.registroActual[this.jTablaRegistro.getSelectedRow()].id_inf)
+            );
+            if(this.coneccionBdd.exitoConsulta){
+                this.cambiarBotones(1);
+                try {
+                    this.ventanaNiño.refrescarNiño();
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.ventanaNiño.setVisible(true);
+                this.setVisible(false);   
+            }
+        }
+    }//GEN-LAST:event_addHermanoActionPerformed
+
+    private void cancelarAñadirHermanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAñadirHermanoActionPerformed
+        this.cambiarBotones(1);
+        this.ventanaNiño.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_cancelarAñadirHermanoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    private javax.swing.JButton addHermano;
+    private javax.swing.JLabel addHermanoLbl;
+    private javax.swing.JLabel addLbl;
     private javax.swing.JButton btnRegistroCompleto;
+    private javax.swing.JButton cancelarAñadirHermano;
+    private javax.swing.JLabel cancelarAñadirHermanoLbl;
     private javax.swing.JButton close;
     private javax.swing.JButton delete;
+    private javax.swing.JLabel deleteLbl;
     private javax.swing.JButton edit;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel editLbl;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

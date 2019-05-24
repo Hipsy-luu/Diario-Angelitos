@@ -5,19 +5,21 @@
  */
 package interfaz_diario_angelitos_v2;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Infant;
+import models.ListaHermanosInfante;
 
-/**
- *
- * @author Usuario
- */
 public class AñadirModificarNiño extends javax.swing.JFrame {
 
     VentanaRegistro ventanaRegistro;
@@ -27,6 +29,11 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     Infant niñoActual;
     String pathFotografia = "";
     
+    DefaultTableModel modeloTablaHermanos;
+    Object[] fila;
+    
+    ListaHermanosInfante hermanosInfante;
+    
     public AñadirModificarNiño( VentanaRegistro ventanaRegistro ) {
         initComponents();
         setLocationRelativeTo(null);
@@ -35,15 +42,93 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         this.ventanaRegistro = ventanaRegistro;
         //Se inicializa el niño de la ventana
         this.niñoActual = new Infant();
+        //Conectamos la tabla de la interfaz con la tabla que tenemos 
+        //en el modelo
+        this.hermanosInfante = new ListaHermanosInfante();
+        this.modeloTablaHermanos = (DefaultTableModel) tablaHermanos.getModel();
+        this.tablaHermanos.setModel(modeloTablaHermanos);
+        
+        //Variable para añadir los elementos a la tabla
+        this.fila=new Object[2];
+        
     }
     //Variable tipo opcion que nos ayuda a saber si se añade o se modifica
     //un niño ( 0 = añadir , 1 = modificar)
     public int opc = 0;
+    
+    private AñadirModificarNiño getFrame(){
+        return this;
+    }
+    
+    public void refrescarHermanos(){
+        this.hermanosInfante =
+                this.ventanaRegistro.coneccionBdd.
+                        listaHermanosInfante(String.valueOf(niñoActual.id_inf));
+        //Borramos el primer campo hasta que este vacia la tabla
+        while(0<modeloTablaHermanos.getRowCount()){
+            modeloTablaHermanos.removeRow(0);
+        }
+        for(int x=0;x<this.hermanosInfante.numHermanos;x++){
+            this.fila[0]=this.hermanosInfante.hermanosNiño[x].name_inf + " " +
+                    this.hermanosInfante.hermanosNiño[x].surnames;
+            this.modeloTablaHermanos.addRow(fila); 
+        }
+        
+        this.eliminarHermanoBtn.setEnabled(false);
+    }
+    
+    public void refrescarNiño() throws IOException{
+        this.actualizarTitulo();
+        File f = new File(niñoActual.image_path);
+        BufferedImage folderImage = ImageIO.read(f);
+        if(this.opc == 0){
+            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.aNom.setText( "Nombre...");
+            this.aApell.setText( "Apellido..." );
+            this.aEdad.setText( String.valueOf( niñoActual.age ) );
+            this.aFechaNac.setText( "Formato de la Fecha : yyyy-mm-dd" );
+            this.aTel.setText( "Telefono..." );
+            this.aDireccion.setText( "Direccion..." );
+            this.aFechaReg.setText( "Formato de la Fecha : yyyy-mm-dd" );
+            this.aAlergias.setText( "Alergias..." );
+            this.aServicoMedico.setText( "Servicio Medico..." );
+            this.aNumeroServicio.setText( "Num. Servicio Med..." );
+            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
+            this.pathFotografia = niñoActual.image_path;
+        }else if(this.opc == 1){
+            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.aNom.setText( niñoActual.name_inf );
+            this.aApell.setText( niñoActual.surnames );
+            this.aEdad.setText( String.valueOf( niñoActual.age ) );
+            this.aFechaNac.setText( niñoActual.birth_day );
+            this.aTel.setText( niñoActual.tel );
+            this.aDireccion.setText( niñoActual.dir );
+            this.aFechaReg.setText( niñoActual.reg_date );
+            this.aAlergias.setText( niñoActual.allergies );
+            this.aServicoMedico.setText( niñoActual.medical_service );
+            this.aNumeroServicio.setText( niñoActual.num_service );
+            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
+            this.pathFotografia = niñoActual.image_path;;
+        }
+        //Se actualiza la tabla de los hermanos
+        this.refrescarHermanos();
+        //this.fotografia.setIcon( Icon() );
+    }
+    
+    public void actualizarTitulo(){
+        if(this.opc==0){
+            this.opcLabel.setText("[Añadir Niño]");
+        }else if(this.opc==1){
+            this.opcLabel.setText("[Modificar Niño]");
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -70,6 +155,25 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         fotografia = new javax.swing.JLabel();
         aCancelar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        eliminarHermanoBtn = new javax.swing.JButton();
+        añadirHermanoBtn = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaHermanos = new javax.swing.JTable();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -193,7 +297,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jLabel6.setText("Añadir Tutor");
+        jLabel6.setText("Tutores");
 
         aGuardar.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         aGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-guardar-cerrar-40.png"))); // NOI18N
@@ -226,9 +330,8 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(fotografia, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         aCancelar.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -242,15 +345,99 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel7.setText("Cancelar");
 
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jLabel8.setText("Eliminar Hermnano");
+
+        jLabel9.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jLabel9.setText("Añadir Hermano");
+
+        eliminarHermanoBtn.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        eliminarHermanoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-familia-hombre-mujer-40.png"))); // NOI18N
+        eliminarHermanoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarHermanoBtnActionPerformed(evt);
+            }
+        });
+
+        añadirHermanoBtn.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        añadirHermanoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-familia-hombre-mujer-40.png"))); // NOI18N
+        añadirHermanoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirHermanoBtnActionPerformed(evt);
+            }
+        });
+
+        tablaHermanos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Hermanos"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tablaHermanos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tablaHermanosFocusGained(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tablaHermanos);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(eliminarHermanoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(aCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))
+                                .addGap(56, 56, 56))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(aFechaNac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,69 +446,53 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
                                         .addComponent(jLabel1))
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addGap(70, 70, 70)
-                                        .addComponent(opcLabel)))
-                                .addGap(0, 269, Short.MAX_VALUE))
+                                        .addComponent(opcLabel))))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(51, 51, 51)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGap(79, 79, 79)
-                                        .addComponent(aFoto))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(30, 30, 30)
-                                                .addComponent(aTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel6)))
-                                        .addGap(19, 19, 19)
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(aGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(jLabel5)))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(jLabel7))
-                                            .addComponent(aCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(aTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(aFechaNac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)))
-                .addGap(29, 29, 29))
+                                    .addComponent(aGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel5)))
+                                .addGap(18, 18, 18)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(82, 82, 82)
+                                .addComponent(aFoto))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(145, 145, 145)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(añadirHermanoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(opcLabel)
-                        .addGap(2, 2, 2)))
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(aFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(opcLabel)
+                                .addGap(2, 2, 2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -335,34 +506,41 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(aFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(añadirHermanoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(eliminarHermanoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel9)
+                                            .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(aTutor)
-                            .addComponent(aGuardar)
-                            .addComponent(aCancelar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5))
-                            .addComponent(jLabel7))))
-                .addGap(0, 25, Short.MAX_VALUE))
+                            .addComponent(aGuardar)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(aCancelar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -383,7 +561,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,7 +575,9 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(592, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,146 +586,159 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private AñadirModificarNiño getFrame(){
-        return this;
-    }
-    
-    
-    
-    public void refrescarNiño() throws IOException{
-        this.actualizarTitulo();
-        File f = new File(niñoActual.image_path);
-        BufferedImage folderImage = ImageIO.read(f);
-        if(this.opc == 0){
-            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
-            this.aNom.setText( "Nombre...");
-            this.aApell.setText( "Apellido..." );
-            this.aEdad.setText( String.valueOf( niñoActual.age ) );
-            this.aFechaNac.setText( "Formato de la Fecha : yyyy-mm-dd" );
-            this.aTel.setText( "Telefono..." );
-            this.aDireccion.setText( "Direccion..." );
-            this.aFechaReg.setText( "Formato de la Fecha : yyyy-mm-dd" );
-            this.aAlergias.setText( "Alergias..." );
-            this.aServicoMedico.setText( "Servicio Medico..." );
-            this.aNumeroServicio.setText( "Num. Servicio Med..." );
-            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
-            this.pathFotografia = niñoActual.image_path;;
-        }else if(this.opc == 1){
-            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
-            this.aNom.setText( niñoActual.name_inf );
-            this.aApell.setText( niñoActual.surnames );
-            this.aEdad.setText( String.valueOf( niñoActual.age ) );
-            this.aFechaNac.setText( niñoActual.birth_day );
-            this.aTel.setText( niñoActual.tel );
-            this.aDireccion.setText( niñoActual.dir );
-            this.aFechaReg.setText( niñoActual.reg_date );
-            this.aAlergias.setText( niñoActual.allergies );
-            this.aServicoMedico.setText( niñoActual.medical_service );
-            this.aNumeroServicio.setText( niñoActual.num_service );
-            this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
-            this.pathFotografia = niñoActual.image_path;;
-        }
-        
-        //this.fotografia.setIcon( Icon() );
-    }
-    
-    private void aGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aGuardarActionPerformed
-        //La opc 0  es para insertar el niño nuevo en la tabla INFANT
-        if(this.opc == 0){
-            this.ventanaRegistro.coneccionBdd.añadirNiño(
-                //Integer.parseInt( this.aId.getText() ), 
-                //Integer.parseInt( this.aEdad.getText()) ,
-                this.aId.getText() , this.aEdad.getText(),
-                this.aNom.getText(),this.aApell.getText(), 
-                this.aFechaNac.getText(),this.aDireccion.getText(), 
-                this.aTel.getText(),this.aFechaReg.getText(),
-                this.pathFotografia,this.aAlergias.getText(),
-                this.aServicoMedico.getText(),this.aNumeroServicio.getText()
-            );
-            //La opcion 1 es para modificarlo
-        }else if(this.opc == 1){
-            this.ventanaRegistro.coneccionBdd.modificarNiño(
-                this.aId.getText() , this.aEdad.getText(),
-                this.aNom.getText(),this.aApell.getText(), 
-                this.aFechaNac.getText(),this.aDireccion.getText(), 
-                this.aTel.getText(),this.aFechaReg.getText(),
-                this.pathFotografia,this.aAlergias.getText(),
-                this.aServicoMedico.getText(),this.aNumeroServicio.getText()
-            );
-        }
-        if(this.ventanaRegistro.coneccionBdd.exitoConsulta){
-            //Se actualiza la vista de la tabla para que cargue el nuevo Infante añadido
-            this.ventanaRegistro.actualizarTabla();
-            //Hacemos la vista del registro visible
+
+    private void añadirHermanoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirHermanoBtnActionPerformed
+        if(this.opc==1){
+            JOptionPane.showMessageDialog(this.getFrame(), "Por favor seleccione un"
+                + " niño para añadilo como hermano");
+            this.ventanaRegistro.cambiarBotones(0);
             this.ventanaRegistro.setVisible(true);
-            //Ocultamos la vista del registro
-            //setVisible(false);
-            dispose();
+            this.setVisible(false);
+        }else{
+            JOptionPane.showMessageDialog(this.getFrame(), "Por favor guarde el niño"
+                + " para añadir hermanos");
         }
+    }//GEN-LAST:event_añadirHermanoBtnActionPerformed
+
+    private void eliminarHermanoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarHermanoBtnActionPerformed
         
-    }//GEN-LAST:event_aGuardarActionPerformed
-
-    public void actualizarTitulo(){
-        if(this.opc==0){
-            this.opcLabel.setText("[Añadir Niño]");
-        }else if(this.opc==1){
-            this.opcLabel.setText("[Modificar Niño]");
-        }
-    }
-    private void aApellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aApellMouseClicked
-        if(this.opc==0){aApell.setText("");}
-    }//GEN-LAST:event_aApellMouseClicked
-
-    private void aEdadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aEdadMouseClicked
-       if(this.opc==0){ aEdad.setText(""); }
-    }//GEN-LAST:event_aEdadMouseClicked
-
-    private void aDireccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aDireccionMouseClicked
-        if(this.opc==0){aDireccion.setText("");}
-    }//GEN-LAST:event_aDireccionMouseClicked
-
-    private void aTelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aTelMouseClicked
-        if(this.opc==0){aTel.setText(""); } 
-    }//GEN-LAST:event_aTelMouseClicked
-
-    private void aTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aTutorActionPerformed
-        this.ventanaTutor.cargarVista( String.valueOf(this.niñoActual.id_inf) );
-        this.ventanaTutor.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_aTutorActionPerformed
-
-    private void aNomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNomMouseClicked
-        if(this.opc==0){
-          aNom.setText("");
-        }
-    }//GEN-LAST:event_aNomMouseClicked
-
-    private void aFechaRegMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aFechaRegMouseClicked
-        if(this.opc==0){ this.aFechaReg.setText("");}
-    }//GEN-LAST:event_aFechaRegMouseClicked
-
-    private void aFechaNacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aFechaNacMouseClicked
-        if(this.opc==0){ this.aFechaNac.setText("");}
-    }//GEN-LAST:event_aFechaNacMouseClicked
-
-    private void aAlergiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aAlergiasMouseClicked
-        if(this.opc==0){ this.aAlergias.setText("");}
-    }//GEN-LAST:event_aAlergiasMouseClicked
-
-    private void aServicoMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aServicoMedicoMouseClicked
-        if(this.opc==0){ this.aServicoMedico.setText(""); }
-    }//GEN-LAST:event_aServicoMedicoMouseClicked
-
-    private void aNumeroServicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNumeroServicioMouseClicked
-        if(this.opc==0){ this.aNumeroServicio.setText(""); }
-    }//GEN-LAST:event_aNumeroServicioMouseClicked
+        this.ventanaRegistro.coneccionBdd.eliminarHermano(
+        String.valueOf( this.niñoActual.id_inf ), 
+        String.valueOf( this.hermanosInfante.hermanosNiño[
+            this.tablaHermanos.getSelectedRow()
+            ].id_inf ) 
+        );
+        this.refrescarHermanos();
+    }//GEN-LAST:event_eliminarHermanoBtnActionPerformed
 
     private void aCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aCancelarActionPerformed
         this.ventanaRegistro.setVisible(true);
         //Ocultamos la vista del niño
         setVisible(false);
     }//GEN-LAST:event_aCancelarActionPerformed
-    
+
+    private void aGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aGuardarActionPerformed
+        this.ventanaTutor.cargarVista(this.aId.getText());
+        if(this.ventanaTutor.tutoresNiño.numTutores>0){
+            //La opc 0  es para insertar el niño nuevo en la tabla INFANT
+            if(this.opc == 0){
+                this.ventanaRegistro.coneccionBdd.añadirNiño(
+                    //Integer.parseInt( this.aId.getText() ),
+                    //Integer.parseInt( this.aEdad.getText()) ,
+                    this.aId.getText() , this.aEdad.getText(),
+                    this.aNom.getText(),this.aApell.getText(),
+                    this.aFechaNac.getText(),this.aDireccion.getText(),
+                    this.aTel.getText(),this.aFechaReg.getText(),
+                    this.pathFotografia,this.aAlergias.getText(),
+                    this.aServicoMedico.getText(),this.aNumeroServicio.getText()
+                );
+                //La opcion 1 es para modificarlo
+            }else if(this.opc == 1){
+                this.ventanaRegistro.coneccionBdd.modificarNiño(
+                    this.aId.getText() , this.aEdad.getText(),
+                    this.aNom.getText(),this.aApell.getText(),
+                    this.aFechaNac.getText(),this.aDireccion.getText(),
+                    this.aTel.getText(),this.aFechaReg.getText(),
+                    this.pathFotografia,this.aAlergias.getText(),
+                    this.aServicoMedico.getText(),this.aNumeroServicio.getText()
+                );
+            };
+            if(this.ventanaRegistro.coneccionBdd.exitoConsulta){
+                //Se actualiza la vista de la tabla para que cargue el nuevo Infante añadido
+                this.ventanaRegistro.actualizarTabla();
+                //Hacemos la vista del registro visible
+                this.ventanaRegistro.setVisible(true);
+                //Ocultamos la vista del registro
+                setVisible(false);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this.getFrame(), "Añada por lo menos 1 tutor");
+        }
+
+    }//GEN-LAST:event_aGuardarActionPerformed
+
+    private void aTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aTutorActionPerformed
+        this.ventanaTutor.cargarVista(this.aId.getText());
+
+        //La opc 0  es para insertar el niño nuevo en la tabla INFANT
+        if(this.opc == 0){
+            JOptionPane.showMessageDialog(this.getFrame(), "Se creara el niño para continuar");
+            this.ventanaRegistro.coneccionBdd.añadirNiño(
+                //Integer.parseInt( this.aId.getText() ),
+                //Integer.parseInt( this.aEdad.getText()) ,
+                this.aId.getText() , this.aEdad.getText(),
+                this.aNom.getText(),this.aApell.getText(),
+                this.aFechaNac.getText(),this.aDireccion.getText(),
+                this.aTel.getText(),this.aFechaReg.getText(),
+                this.pathFotografia,this.aAlergias.getText(),
+                this.aServicoMedico.getText(),this.aNumeroServicio.getText()
+            );
+            //Como ya se creo el niño si se vuelve a modificar solo se actualiza
+            this.opc=1;
+            //La opcion 1 es para modificarlo
+        }else if(this.opc == 1){
+            this.ventanaRegistro.coneccionBdd.modificarNiño(
+                this.aId.getText() , this.aEdad.getText(),
+                this.aNom.getText(),this.aApell.getText(),
+                this.aFechaNac.getText(),this.aDireccion.getText(),
+                this.aTel.getText(),this.aFechaReg.getText(),
+                this.pathFotografia,this.aAlergias.getText(),
+                this.aServicoMedico.getText(),this.aNumeroServicio.getText()
+            );
+        };
+        if(this.ventanaRegistro.coneccionBdd.exitoConsulta){
+            this.ventanaTutor.cargarVista( String.valueOf(this.niñoActual.id_inf) );
+            this.ventanaTutor.setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_aTutorActionPerformed
+
+    private void aNumeroServicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNumeroServicioMouseClicked
+        if(this.opc==0){ this.aNumeroServicio.setText(""); }
+    }//GEN-LAST:event_aNumeroServicioMouseClicked
+
+    private void aServicoMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aServicoMedicoMouseClicked
+        if(this.opc==0){ this.aServicoMedico.setText(""); }
+    }//GEN-LAST:event_aServicoMedicoMouseClicked
+
+    private void aAlergiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aAlergiasMouseClicked
+        if(this.opc==0){ this.aAlergias.setText("");}
+    }//GEN-LAST:event_aAlergiasMouseClicked
+
+    private void aFechaRegMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aFechaRegMouseClicked
+        if(this.opc==0){ this.aFechaReg.setText("");}
+    }//GEN-LAST:event_aFechaRegMouseClicked
+
+    private void aDireccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aDireccionMouseClicked
+        if(this.opc==0){aDireccion.setText("");}
+    }//GEN-LAST:event_aDireccionMouseClicked
+
+    private void aTelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aTelMouseClicked
+        if(this.opc==0){aTel.setText(""); }
+    }//GEN-LAST:event_aTelMouseClicked
+
+    private void aFechaNacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aFechaNacMouseClicked
+        if(this.opc==0){ this.aFechaNac.setText("");}
+    }//GEN-LAST:event_aFechaNacMouseClicked
+
+    private void aEdadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aEdadMouseClicked
+        if(this.opc==0){ aEdad.setText(""); }
+    }//GEN-LAST:event_aEdadMouseClicked
+
+    private void aApellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aApellMouseClicked
+        if(this.opc==0){aApell.setText("");}
+    }//GEN-LAST:event_aApellMouseClicked
+
+    private void aNomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aNomMouseClicked
+        if(this.opc==0){
+            aNom.setText("");
+        }
+    }//GEN-LAST:event_aNomMouseClicked
+
+    private void tablaHermanosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tablaHermanosFocusGained
+        this.eliminarHermanoBtn.setEnabled(true);
+    }//GEN-LAST:event_tablaHermanosFocusGained
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField aAlergias;
     private javax.swing.JTextField aApell;
@@ -562,16 +755,24 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     private javax.swing.JTextField aServicoMedico;
     private javax.swing.JTextField aTel;
     private javax.swing.JButton aTutor;
+    private javax.swing.JButton añadirHermanoBtn;
+    private javax.swing.JButton eliminarHermanoBtn;
     private javax.swing.JLabel fotografia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel opcLabel;
+    private javax.swing.JTable tablaHermanos;
     // End of variables declaration//GEN-END:variables
 }

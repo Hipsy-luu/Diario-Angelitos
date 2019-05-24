@@ -9,5 +9,4 @@ public class Interfaz_Diario_Angelitos_V2 {
         VentanaPrincipal vent= new VentanaPrincipal();
         vent.setVisible(true);
     }
-    
 }

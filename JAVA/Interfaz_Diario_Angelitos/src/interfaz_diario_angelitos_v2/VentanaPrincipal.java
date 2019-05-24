@@ -396,6 +396,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_add1MouseMoved
 
     private void recordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordActionPerformed
+        ventRegistro.cambiarBotones(1);
         ventRegistro.setVisible(true);
         dispose();
     }//GEN-LAST:event_recordActionPerformed

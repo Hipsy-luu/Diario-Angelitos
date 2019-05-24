@@ -13,7 +13,7 @@ public class Letra {
     }
     
     public void marcarUsado(int indice){
-        this.ABC = new Letra[26];
+        this.ABC = new Letra[300];
         this.usado = true;
         this.indice = indice;
     }

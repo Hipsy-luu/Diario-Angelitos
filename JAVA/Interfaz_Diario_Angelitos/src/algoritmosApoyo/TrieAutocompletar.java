@@ -32,7 +32,7 @@ public class TrieAutocompletar {
         for (int i = 0; i < ( nombre.length() ) ; i++) 
         { 
             //Se recore el numero asci para que se comience en la casilla 0
-            int index = nombre.charAt(i) - 'a'; 
+            int index = nombre.charAt(i); 
             if ( aux.ABC[index] == null ) 
                  aux.ABC[index] = nuevaLetra(-1);
             aux = aux.ABC[index]; 
@@ -50,7 +50,7 @@ public class TrieAutocompletar {
         //Buscamos el ultimo caracter
         for (int i = 0; i < palabra.length() ; i++) { 
             //El index representa la casilla del arreglo de 0-26
-            index = palabra.charAt(i) - 'a'; 
+            index = palabra.charAt(i); 
             aux = aux.ABC[index]; 
         } 
         //(antes se debe verificar que existe toda la palabra)
@@ -65,7 +65,7 @@ public class TrieAutocompletar {
         //Buscamos el penultimo caracter
          //El index representa la casilla del arreglo de 0-26
         for (int i = 0; i < (palabra.length()-1) ; i++) { 
-            index = palabra.charAt(i) - 'a';
+            index = palabra.charAt(i);
             aux = aux.ABC[index]; 
         } 
         //(antes se debe verificar que existe toda la palabra)
@@ -82,7 +82,7 @@ public class TrieAutocompletar {
 	ultimoCaracter = regresarUltimoNodo( this.diccionario , palabra );//lo mismo pero regresa el ultimo caracter
 	
 	if( sinHijo(ultimoCaracter) ){ //buscamos que solo tenga un hijo
-            index = palabra.charAt(palabra.length()-1 ) - 'a'; 
+            index = palabra.charAt(palabra.length()-1 ); 
             //Este es el detalle de nuestro programa porque si ponemos el ultimoCaracter como NULL no nos lo borra
             //pero si lo hacemos null desde el penultimo caracter si lo hace
             //Borramos el apuntador del padre a la ultima letra 
@@ -98,7 +98,7 @@ public class TrieAutocompletar {
             ultimoCaracter = regresarUltimoNodo( this.diccionario , palabra );
             while( ultimoCaracter.finalPalabra==false && sinHijo( ultimoCaracter ) == true && palabra.length()>0 ){
                 //Buscamos el ultimo caracter y lo convertimos a valor del arreglo
-                index = palabra.charAt( palabra.length()-1 ) - 'a'; 
+                index = palabra.charAt( palabra.length()-1 ); 
                 padre.ABC[index] = null;
                 //Borramos el ultimo caracter de la cadena
                 if(palabra.length()==1){
@@ -133,16 +133,16 @@ public class TrieAutocompletar {
                 //Se crea una nueva instancia del objeto para llenar el array
                 Coincidencia aux = new Coincidencia(palabra,nodo.indice);
                 this.coincidencias[cont] = aux;
-                //System.out.println("\t"+cont+"- "+palabra);
+                System.out.println("\t"+cont+"- "+palabra);
                 cont++;
             }
             if( sinHijo(nodo) )
                     palabra="";
 	}
 	//Buscamos si existe un caracter y lueno nos movemos a el hasta que recorre todo el diccionario
-	for(int index=0 ; index<26 ; index++){
+	for(int index=0 ; index<300 ; index++){
             if ( nodo.ABC[index] != null ) {
-                char caracter = (char)( index + 'a' ) ;
+                char caracter = (char)( index ) ;
                 palabra = palabra + caracter ;
                 buscarCoincidencias( nodo.ABC[index] , palabraAutocompletar , palabra );
                 if(palabra.length()==1){
@@ -173,7 +173,7 @@ public class TrieAutocompletar {
         Letra aux = root; 
 
         for (int i = 0; i < palabra.length(); i++){ 
-            int index = palabra.charAt(i) - 'a'; 
+            int index = palabra.charAt(i); 
                     
             if ( aux.ABC[index] == null ) //si no existe el nodo (caracter) 
                 return false; 
@@ -194,7 +194,7 @@ public class TrieAutocompletar {
         //Buscamos si existe un caracter y lueno nos movemos a el hasta que recorre todo el diccionario
         for(int index=0 ; index<26 ; index++){
             if ( root.ABC[index] != null ) {
-                char caracter = (char)( index + 'a' ) ;
+                char caracter = (char)( index ) ;
                 palabra = palabra + caracter ;
                 printDic( root.ABC[index] , palabra);
                 

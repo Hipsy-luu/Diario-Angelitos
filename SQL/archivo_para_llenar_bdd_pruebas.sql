@@ -12,6 +12,8 @@ drop SEQUENCE inf_id_seq;
 drop SEQUENCE tut_id_seq;
 
 drop SEQUENCE nin_tut_id_seq;
+
+drop SEQUENCE nin_nin_id_seq;
 --Este comando se usa para reescribir las tablas en caso de que se modifique la estructura del archivo
 --Este archivo esta en esta ruta pero tambien dentro del rpyecto del git asi que si se cambia hay que reescribirlo en el git
 
@@ -25,6 +27,9 @@ CREATE SEQUENCE tut_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
 
 --Secuencia para llevar el control del id de las relaciones NiÃ±os Tutores
 CREATE SEQUENCE nin_tut_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
+
+--Secuencia para llevar el control del id de las relaciones NiÃ±os NiÃ±os
+CREATE SEQUENCE nin_nin_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
 
 --SELECT inf_id_seq.nextval FROM dual;
 
@@ -97,6 +102,36 @@ VALUES( nin_tut_id_seq.nextval , 2 , 2 );
 INSERT INTO INF_TUT ( id_rela_tut_inf , id_inf , id_tut )
 VALUES( nin_tut_id_seq.nextval , 3 , 4 );
 
+--Se insertan algunas relaciones entre hermanos
+INSERT INTO INF_INF ( id_rela_bro , id_inf_a , id_inf_b )
+VALUES( nin_nin_id_seq.nextval , 0 , 1 );
+
+INSERT INTO INF_INF ( id_rela_bro , id_inf_a , id_inf_b )
+VALUES( nin_nin_id_seq.nextval , 2 , 0 );
+
+INSERT INTO INF_INF ( id_rela_bro , id_inf_a , id_inf_b )
+VALUES( nin_nin_id_seq.nextval , 0 , 3 );
+
+commit;
+
+--Busca todos los hermanos de un niño
+SELECT p.id_inf , p.name , p.surnames , p.age ,	p.birth_day  , p.dir  ,	p.tel , p.reg_date , p.image_path,	p.allergies, p.medical_service, p.num_service
+    from INFANT p	
+    WHERE p.id_inf IN (
+        SELECT a.id_inf
+        from INFANT a	
+        join INF_INF b
+        on(b.id_inf_a = a.id_inf )
+        where b.id_inf_b = 0
+    ) or p.id_inf IN (
+        SELECT c.id_inf
+        from INFANT c	
+        join INF_INF d
+        on(d.id_inf_b = c.id_inf )
+        where d.id_inf_a = 0
+    );
+
+--Busca los tutores del niï¿½o con id 2
 SELECT t.id_tut , t.name_tut , t.surnames ,t.age , t.tel , t.dir , t.email , t.work_place
     from INF_TUT i
 	join TUTORS t
@@ -108,6 +143,11 @@ UPDATE TUTORS SET name_tut='Marta' , surnames='Neart Nelson' , age=25 , tel='614
 
 select tut_id_seq.currval from DUAL;
 
+--Buscamos si ya existe la relacion del niño
+SELECT COUNT(*) FROM INF_INF WHERE id_inf_a = 2 and id_inf_b = 0 or id_inf_a = 0 and id_inf_b = 2;
+
+--
+SELECT COUNT(*) FROM INF_TUT WHERE  id_inf = '1' and id_tut = '1' ;
 --UPDATE INFANT 
 --SET name = 'loco' ,surnames= 'Herrera Dominguez' ,
 --age=12,birth_day=TO_DATE('30-JUL-1987', 'dd-MON-yyyy'),

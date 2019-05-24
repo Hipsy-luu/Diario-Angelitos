@@ -2,13 +2,12 @@ package appis;
 
 import algoritmosApoyo.TrieAutocompletar;
 import java.awt.Frame;
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import models.Infant;
+import models.ListaHermanosInfante;
 import models.Tutor;
 import models.TutorsInfant;
 //import librerias.oracle.jdbc.driver.OracleDriver;
@@ -86,7 +85,8 @@ public class ConexionBaseDatos {
                 }
                 //Se añade el nombre del niño al diccionario
                 this.dicionarioNombresNiños.insertWord(
-                        this.registroActual[cantRegistros].name_inf.toLowerCase(),
+                        this.registroActual[cantRegistros].name_inf.toLowerCase()+
+                                " "+this.registroActual[cantRegistros].surnames.toLowerCase(),
                         this.registroActual[cantRegistros].id_inf);
         
                 //Incrementamos el contador para guardarlo en una nueva casilla
@@ -208,13 +208,34 @@ public class ConexionBaseDatos {
         }
     }
     
-    public void insertarRelacionTutInf(String id_inf ){
+    public void insertarRelacionTutInf(String id_inf ,String id_tut){
         try {
-            String comando = 
+            String comando;
+            int checadorRelacion = 0;
+            ListaHermanosInfante hermanosInfante =  listaHermanosInfante(id_inf);
+            for(int x = 0;x < hermanosInfante.numHermanos; x++){
+                comando = 
+                    "SELECT COUNT(*) FROM INF_TUT WHERE "+ 
+                    " id_inf = "+String.valueOf( 
+                            hermanosInfante.hermanosNiño[x].id_inf )+
+                    " and id_tut = "+ id_tut +" ";
+                ResultSet rs = this.stmnt.executeQuery(comando);
+                while( rs.next() ) {
+                    checadorRelacion =new Integer( rs.getObject(1).toString() );
+                }
+                if(checadorRelacion==0){
+                    comando = 
+                    "INSERT INTO INF_TUT ( id_rela_tut_inf , id_inf , id_tut )"+
+                    "VALUES( nin_tut_id_seq.nextval , '"+
+                            hermanosInfante.hermanosNiño[x].id_inf+"' , '"+id_tut+"' )";
+                    this.stmnt.executeQuery(comando);
+                }
+            }
+            comando = 
                 "INSERT INTO INF_TUT ( id_rela_tut_inf , id_inf , id_tut )"+
-                "VALUES( nin_tut_id_seq.nextval , "+id_inf+" , tut_id_seq.currval )";
-            ;
+                "VALUES( nin_tut_id_seq.nextval , '"+id_inf+"' , '"+id_tut+"' )";
             this.stmnt.executeQuery(comando);
+            
             this.exitoConsulta = true;
         } catch (Exception e) {
             System.err.println(e);
@@ -226,11 +247,19 @@ public class ConexionBaseDatos {
     public void insertarTutor(String id_inf, String name_tut,String surnames,String age,
             String tel,String dir,String email,String work_place){
         try {
+            //Se crea el tutor
             String comando = 
                 "INSERT INTO TUTORS ( id_tut , name_tut , surnames ,age , tel , dir , email , work_place )"+
                 "VALUES( tut_id_seq.nextval , '"+name_tut+"','"+surnames+"',"+age+",'"+tel+"','"+dir+"','"+email+"','"+work_place+"')";
             this.stmnt.executeQuery(comando);
-            this.insertarRelacionTutInf(id_inf);
+            //Se pide el id del ultimo elemto creado de los tutores
+            comando = "select tut_id_seq.currval from DUAL";
+            ResultSet rs = this.stmnt.executeQuery(comando);
+            String id_tutor = "";
+            while( rs.next() ) {
+                id_tutor =new String( rs.getObject(1).toString() );
+            };
+            this.insertarRelacionTutInf(id_inf,id_tutor);
             this.exitoConsulta = true;
         } catch (Exception e) {
             System.err.println(e);
@@ -254,6 +283,140 @@ public class ConexionBaseDatos {
             System.err.println(e);
             JOptionPane.showMessageDialog(this.frame, e);
             this.exitoConsulta = false;
+        }
+    }
+    
+    //Esta funcion elimina un tutor en la bdd segun su id_inf
+    public void eliminarTutor(String id_tut) {
+        try {
+            String comando = "DELETE FROM INF_TUT WHERE id_tut = " + id_tut + " ";
+            this.stmnt.executeQuery(comando);
+            comando = "DELETE FROM TUTORS WHERE id_tut = " + id_tut + " ";
+            this.stmnt.executeQuery(comando);
+            this.exitoConsulta = true;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public void añadirHermano(String id_inf_a ,String id_inf_b){
+        try {
+            
+            //Se añade el hermano si la relacion hermano no existia
+            String comando = 
+                    "SELECT COUNT(*) FROM INF_INF WHERE "+ 
+                    " id_inf_a = " +id_inf_a + " and id_inf_b = "+id_inf_b+
+                    " or id_inf_a = " +id_inf_b + " and id_inf_b = "+id_inf_a;
+            ResultSet rs = this.stmnt.executeQuery(comando);
+            
+            int checador = 0;
+            while( rs.next() ) {
+                checador =new Integer( rs.getObject(1).toString() );
+            }
+            if(checador==0){
+                comando = "INSERT INTO INF_INF ( id_rela_bro , id_inf_a , id_inf_b )"+
+                "VALUES( nin_nin_id_seq.nextval , "+id_inf_a+" , "+id_inf_b+" )";
+                this.stmnt.executeQuery(comando);
+                //Se copian los tutores del hermano que se acaba de añadir
+                TutorsInfant tutoresHermano = new TutorsInfant();
+                tutoresHermano = listaTutoresInfante(id_inf_b);
+            
+                for(int x = 0; x < tutoresHermano.numTutores; x++){
+                    int checadorTutor = 0;
+
+                    String comandoChecador = 
+                        "SELECT COUNT(*) FROM INF_TUT WHERE "+ 
+                        " id_inf = "+id_inf_a+" and id_tut = "+tutoresHermano.tutoresNiño[x].id_tut;
+                    rs = this.stmnt.executeQuery(comandoChecador);
+                    while( rs.next() ) {
+                        checadorTutor =new Integer( rs.getObject(1).toString() );
+                    }
+                    //Si no se habia añadido la relacion se añade
+                    if(checadorTutor==0){
+                        this.insertarRelacionTutInf(id_inf_a, String.valueOf( tutoresHermano.tutoresNiño[x].id_tut ) );
+                    }
+                }
+                
+                this.exitoConsulta = true;
+            }else{
+                JOptionPane.showMessageDialog(this.frame, "El hermano ya se añadio");
+                this.exitoConsulta = false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public void eliminarHermano(String id_inf_a ,String id_inf_b){
+        try {
+            String comando = 
+                    "DELETE FROM INF_INF WHERE "+ 
+                    " id_inf_a = " +id_inf_a + " and id_inf_b = "+id_inf_b+
+                    " or id_inf_a = " +id_inf_b + " and id_inf_b = "+id_inf_a;
+            this.stmnt.executeQuery(comando);
+            this.exitoConsulta = true;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public ListaHermanosInfante listaHermanosInfante(String id_inf){
+        ListaHermanosInfante hermanosInfante = new ListaHermanosInfante();
+        try{
+            ResultSet rs = this.stmnt.executeQuery(
+                    "SELECT p.id_inf , p.name , p.surnames , p.age ,	p.birth_day  , p.dir  ,	p.tel , p.reg_date , p.image_path,	p.allergies, p.medical_service, p.num_service" +
+                    " from INFANT p" +
+                    " WHERE p.id_inf IN (" +
+                    "   SELECT a.id_inf" +
+                    "   from INFANT a" +
+                    "   join INF_INF b" +
+                    "   on(b.id_inf_a = a.id_inf )" +
+                    "   where b.id_inf_b = "+id_inf +
+                    " ) or p.id_inf IN (" +
+                    "   SELECT c.id_inf" +
+                    "   from INFANT c" +
+                    "   join INF_INF d" +
+                    "   on(d.id_inf_b = c.id_inf )" +
+                    "   where d.id_inf_a = "+id_inf +
+                    " ) ORDER BY p.id_inf  ASC "
+            );
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cols = rsmd.getColumnCount();
+            //Con esto controlo que lugar voy del arreglo de infantes
+            hermanosInfante.numHermanos = 0;
+            //Variable para hacer el parseo de objeto a String en una linea
+            String[] resultados = new String[cols];
+            Object[] obj = new Object[cols];
+            while( rs.next() && hermanosInfante.numHermanos < 30) {
+                for (int i = 0; i < cols; i++) {
+                    obj[i] = rs.getObject(i + 1);
+                    resultados[i] = new String(obj[i].toString());
+                }
+                //Se crea un nuevo infante y se le pasa a su respectiva posicion
+                hermanosInfante.hermanosNiño[hermanosInfante.numHermanos] = new Infant(
+                        Integer.valueOf(resultados[0]) , Integer.valueOf(resultados[3]) , resultados[1] , resultados[2] ,
+                        resultados[4] , resultados[5] ,	resultados[6] , resultados[7] ,
+                        resultados[8] ,	resultados[9] , resultados[10] , resultados[11]
+                );
+                //Incrementamos el contador para guardarlo en una nueva casilla
+                //Incrementamos el contador de hermanos que existen
+                hermanosInfante.numHermanos++;
+            }
+            this.exitoConsulta = true;
+            hermanosInfante.id_inf=id_inf;
+            return hermanosInfante;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+            return hermanosInfante;
         }
     }
 }

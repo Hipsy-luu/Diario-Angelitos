@@ -2,6 +2,7 @@ package interfaz_diario_angelitos_v2;
 
 import appis.ConexionBaseDatos;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import models.TutorsInfant;
@@ -25,6 +26,10 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         
         this.ventanaNiño = ventanaNiño;
     }
+    
+    private AñadirModificarTutor getFrame(){
+        return this;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -46,6 +51,9 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         idLabel = new javax.swing.JLabel();
         cEdad = new javax.swing.JTextField();
         cDireccion = new javax.swing.JTextField();
+        borrarTutor = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         panelAñadir = new javax.swing.JPanel();
         aNombre = new javax.swing.JTextField();
         aApellidos = new javax.swing.JTextField();
@@ -55,6 +63,7 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         addTutorGuard = new javax.swing.JButton();
         aEdad = new javax.swing.JTextField();
         aDireccion = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaTutores = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
@@ -91,6 +100,11 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         panelModificar.setFocusTraversalPolicyProvider(true);
         panelModificar.setRequestFocusEnabled(false);
         panelModificar.setVerifyInputWhenFocusTarget(false);
+        panelModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelModificarMouseClicked(evt);
+            }
+        });
 
         cNombre.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         cNombre.setForeground(new java.awt.Color(102, 102, 102));
@@ -129,32 +143,49 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         cDireccion.setForeground(new java.awt.Color(102, 102, 102));
         cDireccion.setText("Direccion..");
 
+        borrarTutor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-guardar-cerrar-40.png"))); // NOI18N
+        borrarTutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarTutorActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Eliminar");
+
+        jLabel5.setText("Guardar Cambios");
+
         javax.swing.GroupLayout panelModificarLayout = new javax.swing.GroupLayout(panelModificar);
         panelModificar.setLayout(panelModificarLayout);
         panelModificarLayout.setHorizontalGroup(
             panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelModificarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cNombre)
+                        .addComponent(cApellidos)
+                        .addComponent(cCorreo)
+                        .addComponent(cTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                        .addComponent(cTelefono))
+                    .addComponent(idLabel)
+                    .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cEdad)
+                        .addComponent(cDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelModificarLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
                 .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelModificarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cNombre)
-                            .addComponent(cApellidos)
-                            .addComponent(cCorreo)
-                            .addComponent(cTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
-                            .addComponent(cTelefono)))
+                        .addComponent(borrarTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(modiTutorGuard, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(83, 83, 83))
                     .addGroup(panelModificarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(idLabel))
-                    .addGroup(panelModificarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cEdad)
-                            .addComponent(cDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)))
-                    .addGroup(panelModificarLayout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addComponent(modiTutorGuard, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addGap(70, 70, 70))))
         );
         panelModificarLayout.setVerticalGroup(
             panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,8 +207,14 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(cTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(modiTutorGuard)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(modiTutorGuard)
+                    .addComponent(borrarTutor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         formularioTutor.addTab("Modificar tutor", panelModificar);
@@ -256,14 +293,12 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Añadir Tutor");
+
         javax.swing.GroupLayout panelAñadirLayout = new javax.swing.GroupLayout(panelAñadir);
         panelAñadir.setLayout(panelAñadirLayout);
         panelAñadirLayout.setHorizontalGroup(
             panelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAñadirLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addTutorGuard, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(167, 167, 167))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAñadirLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -275,6 +310,12 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
                     .addComponent(aApellidos, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(aNombre))
                 .addGap(26, 26, 26))
+            .addGroup(panelAñadirLayout.createSequentialGroup()
+                .addGap(143, 143, 143)
+                .addGroup(panelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(addTutorGuard, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelAñadirLayout.setVerticalGroup(
             panelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,11 +332,13 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
                 .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(aTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(addTutorGuard)
-                .addGap(15, 15, 15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         formularioTutor.addTab("Añadir tutor", panelAñadir);
@@ -368,14 +411,14 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(formularioTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(83, 83, 83)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(63, 63, 63)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(formularioTutor, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                        .addComponent(jButton2)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -399,15 +442,13 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         pack();
@@ -439,6 +480,7 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         this.cDireccion.setFocusable(false);
         this.cTelefono.setFocusable(false);
         this.modiTutorGuard.setEnabled(false);
+        this.borrarTutor.setEnabled(false);
         
         this.formularioTutor.setSelectedIndex(0);
         
@@ -499,6 +541,7 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         this.cDireccion.setFocusable(true);
         this.cTelefono.setFocusable(true);
         this.modiTutorGuard.setEnabled(true);
+        this.borrarTutor.setEnabled(true);
     }//GEN-LAST:event_tablaTutoresMouseClicked
 
     private void modiTutorGuardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modiTutorGuardActionPerformed
@@ -520,7 +563,9 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
     private void formularioTutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formularioTutorMouseClicked
         if(this.tutoresNiño.numTutores>3){
             this.formularioTutor.setSelectedIndex(0);
+           
         }
+         System.out.println(" " +tutoresNiño.numTutores );
     }//GEN-LAST:event_formularioTutorMouseClicked
 
     private void aEdadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aEdadMouseClicked
@@ -547,6 +592,26 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addTutorGuardActionPerformed
 
+    private void borrarTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarTutorActionPerformed
+        JOptionPane.showMessageDialog(this.getFrame(), "El tutor se borrara tambien de los hermanos");
+            
+        int indexSelected = this.tablaTutores.getSelectedRow();
+        this.idLabel.setText( String.valueOf( this.tutoresNiño.tutoresNiño[indexSelected].id_tut ) );
+        this.ventanaNiño.ventanaRegistro.coneccionBdd.eliminarTutor( 
+                String.valueOf(
+                        this.tutoresNiño.tutoresNiño[indexSelected].id_tut
+                )
+        );
+        
+        if(this.ventanaNiño.ventanaRegistro.coneccionBdd.exitoConsulta){
+            this.cargarVista(this.tutoresNiño.id_inf);
+        }
+    }//GEN-LAST:event_borrarTutorActionPerformed
+
+    private void panelModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelModificarMouseClicked
+       
+    }//GEN-LAST:event_panelModificarMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField aApellidos;
     private javax.swing.JTextField aCorreo;
@@ -556,6 +621,7 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
     private javax.swing.JTextField aTelefono;
     private javax.swing.JTextField aTrabajo;
     private javax.swing.JButton addTutorGuard;
+    private javax.swing.JButton borrarTutor;
     private javax.swing.JTextField cApellidos;
     private javax.swing.JTextField cCorreo;
     private javax.swing.JTextField cDireccion;
@@ -568,6 +634,9 @@ public class AñadirModificarTutor extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
