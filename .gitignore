@@ -1,3 +1,6 @@
+# Propiedades de compilacion de usuario
+private.properties
+
 # Compiled class file
 *.class
 
