@@ -47,7 +47,7 @@ VALUES( inf_id_seq.nextval ,  'Celia' , 'Rice Alvarez' , 25 , TO_DATE('21-MAR-19
 	, TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')), 'C:/estancia_imagenes/default.png' , 'Ninguna' ,	'IMSS' , '90159215452' );
 
 INSERT INTO INFANT 
-VALUES( inf_id_seq.nextval ,  'Carlos' , 'Herrera Dominguez' , 25 , TO_DATE('12-DEC-1978', 'dd-MON-yyyy') , 'Calle Villa de Lira #9925, Col Campo Bello' , '614-125-25-57' 
+VALUES( inf_id_seq.nextval ,  'Carlos' , 'Herrera Dominguez' , 25 , TO_DATE('12-DIC-1978', 'dd-MON-yyyy') , 'Calle Villa de Lira #9925, Col Campo Bello' , '614-125-25-57' 
 	, TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')), 'C:/estancia_imagenes/default.png' , 'Ninguna' ,	'IMSS' , '90159215452' );
 
 --UPDATE INFANT SET name = 'test'  WHERE id_inf = 6;
