@@ -14,6 +14,11 @@ drop SEQUENCE tut_id_seq;
 drop SEQUENCE nin_tut_id_seq;
 
 drop SEQUENCE nin_nin_id_seq;
+
+drop SEQUENCE daly_ent_id_seq;
+
+drop SEQUENCE daly_dep_id_seq;
+
 --Este comando se usa para reescribir las tablas en caso de que se modifique la estructura del archivo
 --Este archivo esta en esta ruta pero tambien dentro del rpyecto del git asi que si se cambia hay que reescribirlo en el git
 
@@ -31,6 +36,14 @@ CREATE SEQUENCE nin_tut_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE
 --Secuencia para llevar el control del id de las relaciones NiÃ±os NiÃ±os
 CREATE SEQUENCE nin_nin_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
 
+--Secuencia para llevar el control del id de las entradas
+CREATE SEQUENCE daly_ent_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
+
+--Secuencia para llevar el control del id de las salidas 
+CREATE SEQUENCE daly_dep_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
+
+
+
 --SELECT inf_id_seq.nextval FROM dual;
 
 --Se insertan unos cuantos infantes
@@ -47,7 +60,7 @@ VALUES( inf_id_seq.nextval ,  'Celia' , 'Rice Alvarez' , 25 , TO_DATE('21-MAR-19
 	, TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')), 'C:/estancia_imagenes/default.png' , 'Ninguna' ,	'IMSS' , '90159215452' );
 
 INSERT INTO INFANT 
-VALUES( inf_id_seq.nextval ,  'Carlos' , 'Herrera Dominguez' , 25 , TO_DATE('12-DIC-1978', 'dd-MON-yyyy') , 'Calle Villa de Lira #9925, Col Campo Bello' , '614-125-25-57' 
+VALUES( inf_id_seq.nextval ,  'Carlos' , 'Herrera Dominguez' , 25 , TO_DATE('12-DEC-1978', 'dd-MON-yyyy') , 'Calle Villa de Lira #9925, Col Campo Bello' , '614-125-25-57' 
 	, TO_DATE(TO_CHAR(CURRENT_DATE, 'DD-MON-YYYY')), 'C:/estancia_imagenes/default.png' , 'Ninguna' ,	'IMSS' , '90159215452' );
 
 --UPDATE INFANT SET name = 'test'  WHERE id_inf = 6;
@@ -112,7 +125,73 @@ VALUES( nin_nin_id_seq.nextval , 2 , 0 );
 INSERT INTO INF_INF ( id_rela_bro , id_inf_a , id_inf_b )
 VALUES( nin_nin_id_seq.nextval , 0 , 3 );
 
+INSERT INTO DAILY_DEPARTURES ( id_dep , id_rela_tut_inf , date_dep , obs ) 
+VALUES ( daly_dep_id_seq.nextval , 5 ,  TO_DATE('27/05/2019 20:49:40', 'DD/MM/YYYY HH24:MI:SS') , ' ');
+
 commit;
+
+--Consulta para obtener las entradas del dia '27/05/2019'
+--Consulta para obtener los niños que aun no regstran salida del dia actual
+SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service
+    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel
+FROM DAILY_ENTRIES de
+JOIN INF_TUT it
+ON(de.id_rela_tut_inf=it.id_rela_tut_inf)
+JOIN INFANT i
+ON(it.id_inf=i.id_inf)
+JOIN TUTORS t
+ON(it.id_tut=t.id_tut)
+WHERE to_char(DE.date_ent,'dd/MM/yyyy') = '27/05/2019' ;
+--Consulta para obtener los niños que aun no regstran salida del dia actual
+SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service
+    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel
+FROM DAILY_ENTRIES de
+JOIN INF_TUT it
+ON(de.id_rela_tut_inf=it.id_rela_tut_inf)
+JOIN INFANT i
+ON(it.id_inf=i.id_inf)
+JOIN TUTORS t
+ON(it.id_tut=t.id_tut)
+WHERE to_char(DE.date_ent,'dd/MM/yyyy') = (
+    SELECT TO_CHAR(CURRENT_DATE, 'dd/MM/yyyy') 
+    FROM dual
+)
+and 0 = (
+    SELECT COUNT(*) 
+    FROM DAILY_DEPARTURES
+    WHERE id_rela_tut_inf IN (
+        SELECT id_rela_tut_inf 
+        FROM INF_TUT 
+        WHERE id_inf = i.id_inf 
+        and to_char(date_dep,'dd/MM/yyyy') = (
+            SELECT TO_CHAR(CURRENT_DATE, 'dd/MM/yyyy') 
+            FROM dual
+        )
+    )
+);
+
+SELECT TO_CHAR(CURRENT_DATE, 'dd/MM/yyyy') 
+    FROM dual;
+
+SELECT COUNT(*) 
+FROM DAILY_ENTRIES 
+WHERE  id_rela_tut_inf IN (
+    SELECT id_rela_tut_inf 
+    FROM INF_TUT 
+    WHERE id_inf = 0
+) and to_char(date_ent,'dd/MM/yyyy') = '27/05/2019' ;
+
+SELECT COUNT(*) 
+FROM DAILY_ENTRIES 
+WHERE  to_char(date_ent,'dd/MM/yyyy') = '27/05/2019' ;
+    
+SELECT COUNT(*) 
+FROM DAILY_ENTRIES 
+WHERE  id_rela_tut_inf IN (
+    SELECT id_rela_tut_inf 
+    FROM INF_TUT 
+    WHERE id_inf = 3) 
+and date_ent = TO_DATE('27/05/2019 21:49:42','dd/MM/yyyy') ;
 
 --Busca todos los hermanos de un niño
 SELECT p.id_inf , p.name , p.surnames , p.age ,	p.birth_day  , p.dir  ,	p.tel , p.reg_date , p.image_path,	p.allergies, p.medical_service, p.num_service

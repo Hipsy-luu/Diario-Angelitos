@@ -359,7 +359,7 @@
                                                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                                                   <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="add1" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <Component id="darSalida" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                                       </Group>
@@ -409,7 +409,7 @@
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="add1" min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Component id="darSalida" min="-2" pref="50" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -427,10 +427,10 @@
                                               <Component id="historialAsistencias" min="-2" pref="52" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel14" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                                               <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel14" min="-2" pref="16" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
@@ -542,11 +542,10 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="addMouseMoved"/>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="add1">
+                    <Component class="javax.swing.JButton" name="darSalida">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/icons8-eliminar-45 (2).png"/>
@@ -556,8 +555,7 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="add1MouseMoved"/>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="add1ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="darSalidaActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel15">
@@ -632,15 +630,10 @@
                                               <Component id="addNiño" min="-2" pref="48" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="48" max="32767" attributes="0"/>
-                                              <Component id="cancelarAñadirHermanoLbl" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="cancelarAñadirHermano" min="-2" pref="49" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="cancelarAñadirHermanoLbl" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cancelarAñadirHermano" alignment="1" min="-2" pref="49" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
                                   </Group>
@@ -720,6 +713,7 @@
                         <Property name="text" type="java.lang.String" value="Buscar..."/>
                       </Properties>
                       <Events>
+                        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="rBuscarFocusGained"/>
                         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rBuscarMouseClicked"/>
                         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="rBuscarKeyTyped"/>
                       </Events>

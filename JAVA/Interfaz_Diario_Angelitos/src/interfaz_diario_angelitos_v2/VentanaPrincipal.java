@@ -4,7 +4,10 @@ package interfaz_diario_angelitos_v2;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import models.Infant;
+import models.ListaAsistencia;
 import models.TutorsInfant;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
@@ -28,23 +32,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     //Variables para llenar las tablas y datos
     Infant niñoActual;
     TutorsInfant tutoresNiño;
+    ListaAsistencia listaAsistencia;
+    //Variables para auxiliar el control de la pestaña de añadir niño
+    boolean niñoSeleccionado = false;
+    boolean tutorSeleccionado = false;
     
     public VentanaPrincipal() {
         initComponents();
         this.ventRegistro = new VentanaRegistro( getFrame() );
         setLocationRelativeTo(null);
-        Calendar cal=  new GregorianCalendar();
-        String fecha;
-        fecha=cal.get(Calendar.DATE)+"/"+cal.get(Calendar.MONTH)+"/"+cal.get(Calendar.YEAR);
-        this.date1.setText(fecha);
+        
+        //Se actualiza la fecha del sistema 
+        this.date1.setText(fechaActual());
         
         this.tutoresNiño = new TutorsInfant();
         this.modeloTablaAñadir = (DefaultTableModel) jTablaRegistro.getModel();
         this.jTablaRegistro.setModel(modeloTablaAñadir);  
         this.filasTablaAñadir=new Object[5];
         
-        //Variable para añadir los elementos a la tabla
-        
+        //Variable para actualizar y llenar los datos de asistencia actuales
+        this.listaAsistencia = ventRegistro.coneccionBdd.obtenerListaAsistenciaActual();
         //Conectamos la tabla de la interfaz con la tabla que tenemos 
         //en el modelo
         this.modeloTablaPrincipal = (DefaultTableModel) attendanceListTable.getModel();
@@ -52,10 +59,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.filasPrincipal=new Object[5];
         
         this.actualizarTablaConNiños();
-        this.borrarNiño();
+        this.limpiarDatosNiño();
         /*add.setToolTipText("Entro ()niño");
         search.setToolTipText("Buscar");
         record.setToolTipText("Registro");*/
+    }
+    //Nos sirve para llamarla cada que querramos obtene la fecha actual del SO
+    public String fechaActual(){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	Date date = new Date();
+        return dateFormat.format(date);
     }
 
     public void actualizarTablaConNiños(){
@@ -77,6 +90,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.addLbl.setText("Seleccione un niño");
         this.instrucLbl.setText("Seleccione un niño de la lista para continuar:");
         this.addNiño.setEnabled(false);
+        this.niñoSeleccionado = false; 
+        this.tutorSeleccionado = false;
     }
     
     public void actualizarTablaConTutores(){
@@ -101,6 +116,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.instrucLbl.setText("Seleccione el tutor que lo trajo:");
         addNiño.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-de-acuerdo-45.png")));
         this.addLbl.setText("Añadir niño");
+        this.addNiño.setEnabled(false);
     }
     
     public void refrescarNiño(JTable tabla) throws IOException{
@@ -114,7 +130,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.addLbl.setText("Seleccione\nun niño");
     }
     
-    public void borrarNiño(){
+    public void limpiarDatosNiño(){
         this.nombreL.setText( " " );
         this.edadL.setText( " " );
         this.telefonosL.setText( " " );
@@ -164,7 +180,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         attendanceListTable = new javax.swing.JTable();
         add = new javax.swing.JButton();
-        add1 = new javax.swing.JButton();
+        darSalida = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -367,27 +383,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-más-45.png"))); // NOI18N
         add.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        add.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                addMouseMoved(evt);
-            }
-        });
         add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addActionPerformed(evt);
             }
         });
 
-        add1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-45 (2).png"))); // NOI18N
-        add1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        add1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                add1MouseMoved(evt);
-            }
-        });
-        add1.addActionListener(new java.awt.event.ActionListener() {
+        darSalida.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-eliminar-45 (2).png"))); // NOI18N
+        darSalida.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        darSalida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add1ActionPerformed(evt);
+                darSalidaActionPerformed(evt);
             }
         });
 
@@ -421,7 +427,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                                 .addGroup(principalPLayout.createSequentialGroup()
                                     .addGap(6, 6, 6)
                                     .addComponent(jLabel15))
-                                .addComponent(add1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(darSalida, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel17))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -458,7 +464,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(darSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel17))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -473,10 +479,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                                 .addComponent(record, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(historialAsistencias, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel9)
-                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10)))
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, principalPLayout.createSequentialGroup()
                             .addComponent(observacion, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(22, 22, 22))))
@@ -501,6 +507,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         rBuscar.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         rBuscar.setForeground(new java.awt.Color(102, 102, 102));
         rBuscar.setText("Buscar...");
+        rBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                rBuscarFocusGained(evt);
+            }
+        });
         rBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rBuscarMouseClicked(evt);
@@ -570,13 +581,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addGroup(añadirNiñoLayout.createSequentialGroup()
                                 .addGap(140, 140, 140)
                                 .addComponent(addNiño, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(añadirNiñoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(añadirNiñoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cancelarAñadirHermanoLbl))
-                            .addGroup(añadirNiñoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cancelarAñadirHermano, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cancelarAñadirHermanoLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cancelarAñadirHermano, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(157, 157, 157))
                     .addGroup(añadirNiñoLayout.createSequentialGroup()
                         .addGroup(añadirNiñoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -736,19 +744,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void cancelarAñadirHermanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAñadirHermanoActionPerformed
         this.tutoresNiño = new TutorsInfant();
         this.actualizarTablaConNiños();
-        this.borrarNiño();
+        this.limpiarDatosNiño();
         this.izquierdoPrincipal.setSelectedIndex(0);
     }//GEN-LAST:event_cancelarAñadirHermanoActionPerformed
-
+    
     private void addNiñoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNiñoActionPerformed
-        this.actualizarTablaConTutores();
+        if(this.niñoSeleccionado==false){
+            this.actualizarTablaConTutores();
+            this.niñoSeleccionado = true; 
+        }else if(this.niñoSeleccionado && this.tutorSeleccionado){
+            //Aqui va donde se añade
+            this.ventRegistro.coneccionBdd.ingresoNuevoHistorial(
+                String.valueOf(this.niñoActual.id_inf),
+                String.valueOf(this.tutoresNiño.tutoresNiño[jTablaRegistro.getSelectedRow()].id_tut));
+            if(this.ventRegistro.coneccionBdd.exitoConsulta){
+                JOptionPane.showMessageDialog(this.getFrame(), "Añadido a la lista");
+            }
+            this.tutoresNiño = new TutorsInfant();
+            this.actualizarTablaConNiños();
+            this.limpiarDatosNiño();
+            this.izquierdoPrincipal.setSelectedIndex(0);
+            
+        }
     }//GEN-LAST:event_addNiñoActionPerformed
 
     private void jTablaRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablaRegistroMouseClicked
-        try {
+        try {   
+            if(this.niñoSeleccionado==false){
                 this.refrescarNiño(this.jTablaRegistro);
-                this.addLbl.setText("Continuar");
-                this.addNiño.setEnabled(true);
+            }else{
+                this.tutorSeleccionado = true;
+            }
+            
+            this.addLbl.setText("Continuar");
+            this.addNiño.setEnabled(true);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -799,21 +828,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.actualizarTablaConNiños();
     }//GEN-LAST:event_btnRegistroCompletoActionPerformed
 
-    private void add1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add1ActionPerformed
+    private void darSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_darSalidaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_add1ActionPerformed
-
-    private void add1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add1MouseMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_add1MouseMoved
+    }//GEN-LAST:event_darSalidaActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         this.izquierdoPrincipal.setSelectedIndex(1);
     }//GEN-LAST:event_addActionPerformed
-
-    private void addMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addMouseMoved
 
     private void historialAsistenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialAsistenciasActionPerformed
         this.izquierdoPrincipal.setSelectedIndex(2);
@@ -828,6 +849,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void historialAsistencias1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialAsistencias1ActionPerformed
         this.izquierdoPrincipal.setSelectedIndex(0);
     }//GEN-LAST:event_historialAsistencias1ActionPerformed
+
+    private void rBuscarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rBuscarFocusGained
+        this.rBuscar.setText("");
+    }//GEN-LAST:event_rBuscarFocusGained
     //Nuevo método para conseguir el JFrame de la Ventana Principal
     private JFrame getFrame(){
         return this;
@@ -870,7 +895,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Alergias;
     private javax.swing.JButton add;
-    private javax.swing.JButton add1;
     private javax.swing.JLabel addLbl;
     private javax.swing.JButton addNiño;
     private javax.swing.JTable attendanceListHistorialTable;
@@ -879,6 +903,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistroCompleto;
     private javax.swing.JButton cancelarAñadirHermano;
     private javax.swing.JLabel cancelarAñadirHermanoLbl;
+    private javax.swing.JButton darSalida;
     private javax.swing.JLabel date1;
     private javax.swing.JLabel edadL;
     private javax.swing.JLabel fechaRegistroL;
