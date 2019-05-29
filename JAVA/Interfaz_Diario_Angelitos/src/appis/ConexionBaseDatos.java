@@ -56,6 +56,38 @@ public class ConexionBaseDatos {
             this.exitoConsulta = false;
         }
     }
+    
+    public Infant obtenerInfante(String id_inf) {
+        Infant nuevoInfante = new Infant();
+        try {
+            ResultSet rs = this.stmnt.executeQuery(
+                "select * from INFANT WHERE id_inf = "+id_inf+"");
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cols = rsmd.getColumnCount();
+            //Variable para hacer el parseo de objeto a String en una linea
+            String[] resultados = new String[cols];
+            Object[] obj = new Object[cols];
+            while (rs.next()) {
+                for (int i = 0; i < cols; i++) {
+                    obj[i] = rs.getObject(i + 1);
+                    resultados[i] = new String(obj[i].toString());
+                }
+                //Se crea un nuevo infante y se le pasa a su respectiva posicion
+                nuevoInfante = new Infant(
+                        Integer.parseInt(resultados[0]), Integer.parseInt(resultados[3]),
+                         resultados[1], resultados[2], resultados[4], resultados[5], resultados[6],
+                        resultados[7], resultados[8], resultados[9], resultados[10], resultados[11]
+                );
+            }
+            this.exitoConsulta = true;
+            return nuevoInfante;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+            return nuevoInfante;
+        }
+    }
 
     public void obtenerRegistroInfantes() {
         try {
@@ -87,11 +119,12 @@ public class ConexionBaseDatos {
                 if (this.sig_id_inf < this.registroActual[cantRegistros].id_inf) {
                     this.sig_id_inf = this.registroActual[cantRegistros].id_inf;
                 }
-                //Se añade el nombre del niño al diccionario
+                //Se añade el nombre del niño al diccionario y el numero de casilla
+                //que tiene en el arreglo
                 this.dicionarioNombresNiños.insertWord(
                         this.registroActual[cantRegistros].name_inf.toLowerCase()+
                                 " "+this.registroActual[cantRegistros].surnames.toLowerCase(),
-                        this.registroActual[cantRegistros].id_inf);
+                        cantRegistros);
         
                 //Incrementamos el contador para guardarlo en una nueva casilla
                 //Incrementamos el contador de niños que existen

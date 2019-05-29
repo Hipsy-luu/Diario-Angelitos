@@ -133,7 +133,7 @@ public class TrieAutocompletar {
                 //Se crea una nueva instancia del objeto para llenar el array
                 Coincidencia aux = new Coincidencia(palabra,nodo.indice);
                 this.coincidencias[cont] = aux;
-                System.out.println("\t"+cont+"- "+palabra);
+                //System.out.println("\t"+cont+"- "+palabra);
                 cont++;
             }
             if( sinHijo(nodo) )

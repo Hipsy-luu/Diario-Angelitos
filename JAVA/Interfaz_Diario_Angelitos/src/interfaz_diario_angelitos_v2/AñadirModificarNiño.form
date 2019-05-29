@@ -125,35 +125,37 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="aNumeroServicio" min="-2" pref="275" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                          <Component id="aEdad" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
-                                          <Component id="aFechaNac" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="idLvl" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="aNumeroServicio" min="-2" pref="275" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                              <Component id="aEdad" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
+                                              <Component id="aFechaNac" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="aNom" min="-2" pref="275" max="-2" attributes="0"/>
+                                          <Component id="aApell" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="aNom" min="-2" pref="275" max="-2" attributes="0"/>
-                                      <Component id="aId" min="-2" pref="275" max="-2" attributes="0"/>
-                                      <Component id="aApell" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <Component id="aTel" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <Component id="aDireccion" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <Component id="aFechaReg" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <Component id="aAlergias" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <Component id="aServicoMedico" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="aTel" min="-2" pref="275" max="-2" attributes="0"/>
-                                  <Component id="aDireccion" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
-                                  <Component id="aFechaReg" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
-                                  <Component id="aAlergias" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
-                                  <Component id="aServicoMedico" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                                          <Component id="opcLabel" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                                              <Component id="opcLabel" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
@@ -227,10 +229,11 @@
                                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="aId" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                                  <Component id="idLvl" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="aNom" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -337,18 +340,6 @@
                       <Font name="Comic Sans MS" size="10" style="0"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="[A&#xf1;adir ni&#xf1;o]"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="aId">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Comic Sans MS" size="12" style="0"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="66" green="66" red="66" type="rgb"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="ID"/>
-                    <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="aNom">
@@ -672,6 +663,11 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JLabel" name="idLvl">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="ID: "/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>

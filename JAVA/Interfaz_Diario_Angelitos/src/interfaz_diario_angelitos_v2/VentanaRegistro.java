@@ -46,8 +46,6 @@ public class VentanaRegistro extends javax.swing.JFrame {
         //Coneccion a la base de datos
         this.coneccionBdd = new ConexionBaseDatos(getFrame());
         //Se actualizan los botones principales
-        this.cambiarBotones(1);
-        //Se actualiza la tabla siempre que se haga algo en la tabla de Infantes
         this.actualizarTabla();
     }
 
@@ -67,12 +65,13 @@ public class VentanaRegistro extends javax.swing.JFrame {
             fila[4]=this.coneccionBdd.registroActual[x].reg_date;
             modeloTablaRegistro.addRow(fila); 
         }
+        this.cambiarBotones(1);
     }
     
     public void cambiarBotones(int opc){
         if(opc==0){
             this.add.setVisible(false);
-            this.edit.setVisible(false);
+            this.editBtn.setVisible(false);
             this.delete.setVisible(false);
             this.addLbl.setVisible(false);
             this.editLbl.setVisible(false);
@@ -85,13 +84,14 @@ public class VentanaRegistro extends javax.swing.JFrame {
             this.cancelarAñadirHermanoLbl.setVisible(true);
         }else if(opc==1){
             this.add.setVisible(true);
-            this.edit.setVisible(true);
+            this.editBtn.setVisible(true);
             this.delete.setVisible(true);
             this.addLbl.setVisible(true);
             this.editLbl.setVisible(true);
             this.deleteLbl.setVisible(true);
             this.close.setVisible(true);
             
+            this.editBtn.setEnabled(false);
             this.addHermano.setVisible(false);
             this.cancelarAñadirHermano.setVisible(false);
             this.addHermanoLbl.setVisible(false);
@@ -106,7 +106,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnRegistroCompleto = new javax.swing.JButton();
-        edit = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
         add = new javax.swing.JButton();
         editLbl = new javax.swing.JLabel();
         delete = new javax.swing.JButton();
@@ -138,10 +138,10 @@ public class VentanaRegistro extends javax.swing.JFrame {
             }
         });
 
-        edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-editar-45.png"))); // NOI18N
-        edit.addActionListener(new java.awt.event.ActionListener() {
+        editBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-editar-45.png"))); // NOI18N
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editActionPerformed(evt);
+                editBtnActionPerformed(evt);
             }
         });
 
@@ -208,7 +208,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -220,6 +220,11 @@ public class VentanaRegistro extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTablaRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablaRegistroMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTablaRegistro);
@@ -280,7 +285,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
                                         .addComponent(addHermanoLbl)
                                         .addGap(57, 57, 57)))
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(editLbl))
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -317,7 +322,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(add)
                             .addComponent(addHermano)
-                            .addComponent(edit)
+                            .addComponent(editBtn)
                             .addComponent(delete))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,6 +382,8 @@ public class VentanaRegistro extends javax.swing.JFrame {
         this.ventanaNiño.opc = 0;
         //Se carga un nuevo niño en la interfaz
         this.ventanaNiño.niñoActual = new Infant();
+        //Aqui se debe de obtener el id que va en la secuencia actual de ids
+        //se los niños
         this.ventanaNiño.niñoActual.id_inf = this.coneccionBdd.sig_id_inf+1;
         try {
             //Se refresca la interfaz
@@ -390,18 +397,23 @@ public class VentanaRegistro extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_addActionPerformed
 
-    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         //Se indica que tipo de operacion debe hacer la ventana (0 para nuevo niño 1 para modificar)
         this.ventanaNiño.opc = 1;
         try{
-            int indexSelected = (int) this.jTablaRegistro.getValueAt(this.jTablaRegistro.getSelectedRow(),0);
+           int id_inf_Selected = (int) this.jTablaRegistro.getValueAt(
+                   this.jTablaRegistro.getSelectedRow(),0);
+           //int indexSelected = (int) this.jTablaRegistro.getSelectedRow();
             //Se cargan los datos del niño seleccionado
-           this.ventanaNiño.niñoActual = this.coneccionBdd.registroActual[indexSelected];
+           //this.ventanaNiño.niñoActual = this.coneccionBdd.registroActual[indexSelected];
+           this.ventanaNiño.niñoActual = this.coneccionBdd.obtenerInfante(
+                   String.valueOf(id_inf_Selected)
+           );
            try {
                //Se actualiza en la interfaz el niño cargado en la ventana
                this.ventanaNiño.refrescarNiño();
            } catch (IOException ex) {
-               Logger.getLogger(VentanaRegistro.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(this.getFrame(), ex);
            }
            //Se hace visible la ventana del niño
            this.ventanaNiño.setVisible(true);
@@ -410,7 +422,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
         }catch(Exception e){
             JOptionPane.showMessageDialog(this.getFrame(), "Seleccione un niño por favor");
         }
-    }//GEN-LAST:event_editActionPerformed
+    }//GEN-LAST:event_editBtnActionPerformed
 
     private void rBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rBuscarMouseClicked
         rBuscar.setText("");
@@ -434,7 +446,8 @@ public class VentanaRegistro extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Registro de niños Vacio");
                 this.rBuscar.setText("");
             }else{
-                this.coneccionBdd.dicionarioNombresNiños.buscarCoincidencias( this.rBuscar.getText() );
+                this.coneccionBdd.dicionarioNombresNiños.buscarCoincidencias( 
+                        this.rBuscar.getText().toLowerCase() );
                 //Borramos el primer campo hasta que este vacia la tabla
                 while(0<modeloTablaRegistro.getRowCount()){
                     modeloTablaRegistro.removeRow(0);
@@ -447,7 +460,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
                                 this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
                             ].name_inf + " " +this.coneccionBdd.registroActual[
                                 this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
-                            ];
+                            ].surnames;
                     fila[2]=this.coneccionBdd.registroActual[
                             this.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
                             ].age;
@@ -499,6 +512,12 @@ public class VentanaRegistro extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_cancelarAñadirHermanoActionPerformed
 
+    private void jTablaRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablaRegistroMouseClicked
+        this.editBtn.setEnabled(true);
+        int indexSelected = (int) this.jTablaRegistro.getValueAt(
+                   this.jTablaRegistro.getSelectedRow(),0);
+    }//GEN-LAST:event_jTablaRegistroMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
     private javax.swing.JButton addHermano;
@@ -510,7 +529,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     private javax.swing.JButton close;
     private javax.swing.JButton delete;
     private javax.swing.JLabel deleteLbl;
-    private javax.swing.JButton edit;
+    private javax.swing.JButton editBtn;
     private javax.swing.JLabel editLbl;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

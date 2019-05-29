@@ -82,7 +82,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         File f = new File(niñoActual.image_path);
         BufferedImage folderImage = ImageIO.read(f);
         if(this.opc == 0){
-            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.idLvl.setText( "ID: "+ String.valueOf(niñoActual.id_inf ) );
             this.aNom.setText( "Nombre...");
             this.aApell.setText( "Apellido..." );
             this.aEdad.setText( String.valueOf( niñoActual.age ) );
@@ -96,7 +96,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
             this.fotografia.setIcon(new javax.swing.ImageIcon(folderImage));
             this.pathFotografia = niñoActual.image_path;
         }else if(this.opc == 1){
-            this.aId.setText( String.valueOf( niñoActual.id_inf ) );
+            this.idLvl.setText( "ID: "+ String.valueOf(niñoActual.id_inf ) );
             this.aNom.setText( niñoActual.name_inf );
             this.aApell.setText( niñoActual.surnames );
             this.aEdad.setText( String.valueOf( niñoActual.age ) );
@@ -135,7 +135,6 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         opcLabel = new javax.swing.JLabel();
-        aId = new javax.swing.JTextField();
         aNom = new javax.swing.JTextField();
         aApell = new javax.swing.JTextField();
         aEdad = new javax.swing.JTextField();
@@ -161,6 +160,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         añadirHermanoBtn = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaHermanos = new javax.swing.JTable();
+        idLvl = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -192,11 +192,6 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
 
         opcLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 10)); // NOI18N
         opcLabel.setText("[Añadir niño]");
-
-        aId.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        aId.setForeground(new java.awt.Color(102, 102, 102));
-        aId.setText("ID");
-        aId.setFocusable(false);
 
         aNom.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         aNom.setForeground(new java.awt.Color(102, 102, 102));
@@ -402,36 +397,39 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tablaHermanos);
 
+        idLvl.setText("ID: ");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(idLvl, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(aNumeroServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(aFechaNac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(opcLabel)))))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(aEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(aFechaNac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(aApell, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(aTel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(aDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(aFechaReg, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(aAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(aServicoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel1))
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addGap(70, 70, 70)
+                                    .addComponent(opcLabel))))))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(92, 92, 92)
@@ -486,7 +484,8 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(aId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(idLvl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(aNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -620,20 +619,21 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarHermanoBtnActionPerformed
 
     private void aCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aCancelarActionPerformed
+        this.ventanaRegistro.actualizarTabla();
         this.ventanaRegistro.setVisible(true);
         //Ocultamos la vista del niño
         setVisible(false);
     }//GEN-LAST:event_aCancelarActionPerformed
 
     private void aGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aGuardarActionPerformed
-        this.ventanaTutor.cargarVista(this.aId.getText());
+        this.ventanaTutor.cargarVista(String.valueOf(niñoActual.id_inf ));
         if(this.ventanaTutor.tutoresNiño.numTutores>0){
             //La opc 0  es para insertar el niño nuevo en la tabla INFANT
             if(this.opc == 0){
                 this.ventanaRegistro.coneccionBdd.añadirNiño(
-                    //Integer.parseInt( this.aId.getText() ),
+                    //Integer.parseInt( this.idLvl.getText() ),
                     //Integer.parseInt( this.aEdad.getText()) ,
-                    this.aId.getText() , this.aEdad.getText(),
+                    String.valueOf(niñoActual.id_inf ) , this.aEdad.getText(),
                     this.aNom.getText(),this.aApell.getText(),
                     this.aFechaNac.getText(),this.aDireccion.getText(),
                     this.aTel.getText(),this.aFechaReg.getText(),
@@ -643,7 +643,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
                 //La opcion 1 es para modificarlo
             }else if(this.opc == 1){
                 this.ventanaRegistro.coneccionBdd.modificarNiño(
-                    this.aId.getText() , this.aEdad.getText(),
+                    String.valueOf(niñoActual.id_inf ) , this.aEdad.getText(),
                     this.aNom.getText(),this.aApell.getText(),
                     this.aFechaNac.getText(),this.aDireccion.getText(),
                     this.aTel.getText(),this.aFechaReg.getText(),
@@ -666,15 +666,15 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     }//GEN-LAST:event_aGuardarActionPerformed
 
     private void aTutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aTutorActionPerformed
-        this.ventanaTutor.cargarVista(this.aId.getText());
+        this.ventanaTutor.cargarVista(String.valueOf(niñoActual.id_inf ));
 
         //La opc 0  es para insertar el niño nuevo en la tabla INFANT
         if(this.opc == 0){
             JOptionPane.showMessageDialog(this.getFrame(), "Se creara el niño para continuar");
             this.ventanaRegistro.coneccionBdd.añadirNiño(
-                //Integer.parseInt( this.aId.getText() ),
+                //Integer.parseInt( this.idLvl.getText() ),
                 //Integer.parseInt( this.aEdad.getText()) ,
-                this.aId.getText() , this.aEdad.getText(),
+                String.valueOf(niñoActual.id_inf ) , this.aEdad.getText(),
                 this.aNom.getText(),this.aApell.getText(),
                 this.aFechaNac.getText(),this.aDireccion.getText(),
                 this.aTel.getText(),this.aFechaReg.getText(),
@@ -686,7 +686,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
             //La opcion 1 es para modificarlo
         }else if(this.opc == 1){
             this.ventanaRegistro.coneccionBdd.modificarNiño(
-                this.aId.getText() , this.aEdad.getText(),
+                String.valueOf(niñoActual.id_inf ) , this.aEdad.getText(),
                 this.aNom.getText(),this.aApell.getText(),
                 this.aFechaNac.getText(),this.aDireccion.getText(),
                 this.aTel.getText(),this.aFechaReg.getText(),
@@ -757,7 +757,6 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     private javax.swing.JTextField aFechaReg;
     private javax.swing.JButton aFoto;
     private javax.swing.JButton aGuardar;
-    private javax.swing.JTextField aId;
     private javax.swing.JTextField aNom;
     private javax.swing.JTextField aNumeroServicio;
     private javax.swing.JTextField aServicoMedico;
@@ -766,6 +765,7 @@ public class AñadirModificarNiño extends javax.swing.JFrame {
     private javax.swing.JButton añadirHermanoBtn;
     private javax.swing.JButton eliminarHermanoBtn;
     private javax.swing.JLabel fotografia;
+    private javax.swing.JLabel idLvl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;

@@ -263,7 +263,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     public void refrescarNiño(JTable tabla,int opc) throws IOException{
         if(opc==0){
-            this.niñoActual = this.ventRegistro.coneccionBdd.registroActual[tabla.getSelectedRow()];
+            int id_inf_Selected = (int) this.jTablaRegistro.getValueAt(
+                   this.jTablaRegistro.getSelectedRow(),0);
+           //int indexSelected = (int) this.jTablaRegistro.getSelectedRow();
+            //Se cargan los datos del niño seleccionado
+           //this.ventanaNiño.niñoActual = this.coneccionBdd.registroActual[indexSelected];
+           this.niñoActual = this.ventRegistro.coneccionBdd.obtenerInfante(
+                   String.valueOf(id_inf_Selected)
+           );
         }else{
             this.niñoActual = new Infant();
             Detalles detalles = this.listaAsistencia.detalles[tabla.getSelectedRow()];
@@ -355,7 +362,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         add = new javax.swing.JButton();
         darSalidaBtn = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
         jLabel14 = new javax.swing.JLabel();
@@ -363,6 +369,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         mostrarListaLbl = new javax.swing.JLabel();
         mostrandoListaTipoLbl = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         añadirNiño = new javax.swing.JPanel();
         btnRegistroCompleto = new javax.swing.JButton();
         addLbl = new javax.swing.JLabel();
@@ -394,39 +401,39 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(255, 204, 204));
 
-        jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel4.setText("Datos del menor");
+        jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-usuario-de-género-neutro-100.png"))); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
 
-        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel5.setText("Nombre");
+        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
         nombreL.setText("jLabel16");
 
-        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel6.setText("Edad");
+        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
         edadL.setText("jLabel16");
 
-        jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel7.setText("Telefonos");
+        jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
         telefonosL.setText("jLabel16");
 
-        jLabel11.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel11.setText("Alergias");
+        jLabel11.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
         Alergias.setText("jLabel16");
 
-        jLabel12.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel12.setText("Servicio medico y numero");
+        jLabel12.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
         servicioNumeroMedicoL.setText("jLabel16");
 
-        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel8.setText("Fecha de ingreso");
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
 
         fechaRegistroL.setText("jLabel16");
 
@@ -435,9 +442,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
@@ -453,14 +460,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                                     .addComponent(telefonosL)
                                     .addComponent(nombreL)
                                     .addComponent(edadL)
-                                    .addComponent(fechaRegistroL))))
-                        .addGap(21, 21, 21))
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(jLabel4))
-                        .addComponent(jLabel3)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                                    .addComponent(fechaRegistroL)))))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -520,8 +526,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel16.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel16.setText("Regresar");
+        jLabel16.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         cambiarVistaHistorialBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-carpeta-de-documentos-45.png"))); // NOI18N
         cambiarVistaHistorialBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -531,11 +537,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel21.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel21.setText("Mostrar");
+        jLabel21.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
-        mostrarListaHistorialLbl.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         mostrarListaHistorialLbl.setText("salidas");
+        mostrarListaHistorialLbl.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -550,7 +556,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(72, 72, 72)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
+                        .addGap(112, 112, 112)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cambiarVistaHistorialBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -600,17 +606,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/diary (1).png"))); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
         jLabel1.setText("Diario Angelitos");
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
 
-        jLabel13.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel13.setText("Fecha:");
+        jLabel13.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
-        date1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         date1.setText("00/00/0000");
+        date1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         izquierdoPrincipal.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
 
@@ -639,14 +645,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel10.setText("Historial");
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
-        jLabel18.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel18.setText("Observación:");
+        jLabel18.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel9.setText("Registro");
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         listaAsistenciaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -694,18 +700,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel15.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel15.setText("Añadir");
-
-        jLabel17.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jLabel17.setText("Eliminar");
+        jLabel15.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         observacion.setColumns(20);
         observacion.setRows(5);
         jScrollPane3.setViewportView(observacion);
 
-        jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel14.setText("Guardar");
+        jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         cambiarVistaBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-carpeta-de-documentos-45.png"))); // NOI18N
         cambiarVistaBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -715,16 +718,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel20.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabel20.setText("Mostrar");
+        jLabel20.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
-        mostrarListaLbl.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         mostrarListaLbl.setText("salidas");
+        mostrarListaLbl.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
+        mostrandoListaTipoLbl.setText("Mostrando las Entradas del dia de hoy:");
         mostrandoListaTipoLbl.setBackground(new java.awt.Color(0, 0, 0));
         mostrandoListaTipoLbl.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
         mostrandoListaTipoLbl.setForeground(new java.awt.Color(0, 0, 0));
-        mostrandoListaTipoLbl.setText("Mostrando las Entradas del dia de hoy:");
+
+        jLabel17.setText("Dar salida");
+        jLabel17.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout principalPLayout = new javax.swing.GroupLayout(principalP);
         principalP.setLayout(principalPLayout);
@@ -759,19 +765,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(16, 16, 16))))
             .addGroup(principalPLayout.createSequentialGroup()
                 .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, principalPLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel15)
-                            .addComponent(darSalidaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(principalPLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel17)
                             .addComponent(cambiarVistaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(mostrarListaLbl)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, principalPLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(darSalidaBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(add, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(18, 18, 18)
                 .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(mostrandoListaTipoLbl)
@@ -792,7 +798,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(darSalidaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(cambiarVistaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel20)
@@ -824,20 +830,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         añadirNiño.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnRegistroCompleto.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         btnRegistroCompleto.setText("Registro Completo");
+        btnRegistroCompleto.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         btnRegistroCompleto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistroCompletoActionPerformed(evt);
             }
         });
 
-        addLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         addLbl.setText("Añadir niño");
+        addLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
 
+        rBuscar.setText("Buscar...");
         rBuscar.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         rBuscar.setForeground(new java.awt.Color(102, 102, 102));
-        rBuscar.setText("Buscar...");
         rBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 rBuscarFocusGained(evt);
@@ -863,11 +869,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jTablaRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -891,11 +904,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        cancelarAñadirHermanoLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         cancelarAñadirHermanoLbl.setText("Cancelar");
+        cancelarAñadirHermanoLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
 
-        instrucLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         instrucLbl.setText("Seleccione un niño de la lista para continuar:");
+        instrucLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
 
         javax.swing.GroupLayout añadirNiñoLayout = new javax.swing.GroupLayout(añadirNiño);
         añadirNiño.setLayout(añadirNiñoLayout);
@@ -954,14 +967,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         historial.setBackground(new java.awt.Color(255, 255, 255));
 
+        observacionHistorialLvl.setText("Observación:");
         observacionHistorialLvl.setBackground(new java.awt.Color(0, 0, 0));
         observacionHistorialLvl.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         observacionHistorialLvl.setForeground(new java.awt.Color(0, 0, 0));
-        observacionHistorialLvl.setText("Observación:");
 
+        fechaSelec.setText("Dia de consulta:");
         fechaSelec.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         fechaSelec.setForeground(new java.awt.Color(60, 63, 65));
-        fechaSelec.setText("Dia de consulta:");
 
         listaAsistenciaHistorialTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1131,7 +1144,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Registro de niños Vacio");
                 this.rBuscar.setText("");
             }else{
-                this.ventRegistro.coneccionBdd.dicionarioNombresNiños.buscarCoincidencias( this.rBuscar.getText() );
+                this.ventRegistro.coneccionBdd.dicionarioNombresNiños.buscarCoincidencias( this.rBuscar.getText().toLowerCase() );
                 //Borramos el primer campo hasta que este vacia la tabla
                 while(0<modeloTablaAñadir.getRowCount()){
                     modeloTablaAñadir.removeRow(0);
@@ -1144,7 +1157,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     this.ventRegistro.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
                     ].name_inf + " " +this.ventRegistro.coneccionBdd.registroActual[
                     this.ventRegistro.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
-                    ];
+                    ].surnames;
                     filasTablaAñadir[2]=this.ventRegistro.coneccionBdd.registroActual[
                     this.ventRegistro.coneccionBdd.dicionarioNombresNiños.coincidencias[x].index
                     ].age;
@@ -1182,6 +1195,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_darSalidaBtnActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        this.limpiarDatosNiño();
         this.izquierdoPrincipal.setSelectedIndex(1);
     }//GEN-LAST:event_addActionPerformed
 
@@ -1198,7 +1212,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_recordActionPerformed
 
     private void regresarPPrincipalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarPPrincipalBtnActionPerformed
-        this.actualizarTablaListaAsistencia(0);
+        //Borramos el primer campo hasta que este vacia la tabla
+        while(0<this.modeloTablaAsistencias.getRowCount()){
+            this.modeloTablaAsistencias.removeRow(0);
+        }
+        this.observacionHistorialLvl.setText("Observación: ");
         this.izquierdoPrincipal.setSelectedIndex(0);
         this.derechePrincipal.setSelectedIndex(0);
     }//GEN-LAST:event_regresarPPrincipalBtnActionPerformed
