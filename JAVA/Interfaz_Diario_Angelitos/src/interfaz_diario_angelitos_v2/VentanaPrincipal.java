@@ -466,7 +466,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -499,7 +499,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fechaRegistroL)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         derechePrincipal.addTab("tab2", jPanel5);
@@ -578,7 +578,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mostrarListaHistorialLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(regresarPPrincipalBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -591,18 +591,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(derechePrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(derechePrincipal)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(derechePrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(derechePrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, 270, 510));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, 320, 510));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -742,9 +740,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addGroup(principalPLayout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(433, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, principalPLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
+                    .addGroup(principalPLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(obsGuardarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(principalPLayout.createSequentialGroup()
@@ -823,7 +821,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, principalPLayout.createSequentialGroup()
                             .addComponent(obsGuardarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(22, 22, 22))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         izquierdoPrincipal.addTab("", principalP);
@@ -956,7 +954,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(añadirNiñoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(addNiño, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelarAñadirHermano, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(añadirNiñoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addLbl)
                     .addComponent(cancelarAñadirHermanoLbl))
@@ -1025,7 +1023,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         historialLayout.setVerticalGroup(
             historialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(historialLayout.createSequentialGroup()
-                .addContainerGap(7, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(fechaSelec)
                 .addGap(349, 349, 349)
                 .addComponent(observacionHistorialLvl, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1034,7 +1032,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(historialLayout.createSequentialGroup()
                     .addGap(31, 31, 31)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(69, Short.MAX_VALUE)))
+                    .addContainerGap(78, Short.MAX_VALUE)))
         );
 
         izquierdoPrincipal.addTab("", historial);
@@ -1070,13 +1068,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel13)
                         .addComponent(date1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(izquierdoPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(izquierdoPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 570, 510));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 540));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 540));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1323,11 +1321,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 );
             }
         }else{
-            Date date = Date.from(this.calendarPanel1.getSelectedDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-            String strDate = dateFormat.format(date); 
-            this.fechaSelec.setText("Dia de consulta: "+strDate);
-            this.actualizarTablaListaAsistenciaHistorial(strDate, 0);
+            try{
+                Date date = Date.from(this.calendarPanel1.getSelectedDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+                String strDate = dateFormat.format(date); 
+                this.fechaSelec.setText("Dia de consulta: "+strDate);
+                this.actualizarTablaListaAsistenciaHistorial(strDate, 0);
+                this.mostrandoEntradasHistorial=true;
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(
+                    this.getFrame(), "Seleccione un dia por favor"
+                );
+            }
+
         }
     }//GEN-LAST:event_cambiarVistaHistorialBtnActionPerformed
     //Nuevo método para conseguir el JFrame de la Ventana Principal

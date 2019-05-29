@@ -42,7 +42,7 @@ CREATE SEQUENCE daly_ent_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALU
 --Secuencia para llevar el control del id de las salidas 
 CREATE SEQUENCE daly_dep_id_seq START WITH 0 INCREMENT BY 1 MINVALUE 0 NOMAXVALUE;
 
-
+commit;
 
 --SELECT inf_id_seq.nextval FROM dual;
 
@@ -125,8 +125,8 @@ VALUES( nin_nin_id_seq.nextval , 2 , 0 );
 INSERT INTO INF_INF ( id_rela_bro , id_inf_a , id_inf_b )
 VALUES( nin_nin_id_seq.nextval , 0 , 3 );
 
-INSERT INTO DAILY_DEPARTURES ( id_dep , id_rela_tut_inf , date_dep , obs ) 
-VALUES ( daly_dep_id_seq.nextval , 5 ,  TO_DATE('27/05/2019 20:49:40', 'DD/MM/YYYY HH24:MI:SS') , ' ');
+--INSERT INTO DAILY_DEPARTURES ( id_dep , id_rela_tut_inf , date_dep , obs ) 
+--VALUES ( daly_dep_id_seq.nextval , 5 ,  TO_DATE('27/05/2019 20:49:40', 'DD/MM/YYYY HH24:MI:SS') , ' ');
 
 commit;
 
@@ -221,6 +221,8 @@ UPDATE TUTORS SET name_tut='Marta' , surnames='Neart Nelson' , age=25 , tel='614
 	dir='Calle Villa de Lira #9925, Col Campo Bello' , email='hchotmail@gmail.com' , work_place='UACH'  WHERE id_tut = 3;
 
 select tut_id_seq.currval from DUAL;
+
+select inf_id_seq.currval from INFANT;
 
 --Buscamos si ya existe la relacion del niño
 SELECT COUNT(*) FROM INF_INF WHERE id_inf_a = 2 and id_inf_b = 0 or id_inf_a = 0 and id_inf_b = 2;
