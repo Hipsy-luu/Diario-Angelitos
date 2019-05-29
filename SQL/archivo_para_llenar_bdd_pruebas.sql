@@ -143,8 +143,8 @@ JOIN TUTORS t
 ON(it.id_tut=t.id_tut)
 WHERE to_char(DE.date_ent,'dd/MM/yyyy') = '27/05/2019' ;
 --Consulta para obtener los niños que aun no regstran salida del dia actual
-SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service
-    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel
+SELECT it.id_rela_tut_inf , i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service
+    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel , de.id_ent
 FROM DAILY_ENTRIES de
 JOIN INF_TUT it
 ON(de.id_rela_tut_inf=it.id_rela_tut_inf)

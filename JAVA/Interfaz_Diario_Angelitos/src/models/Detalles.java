@@ -16,6 +16,8 @@ public class Detalles {
     public String t_name_tut ;
     public String t_surnames ;
     public String t_tel;
+    public String id_rela_tut_inf;
+    public String id_ent_sal;
     
     public Detalles(){
         this.i_id_inf=0;
@@ -33,12 +35,15 @@ public class Detalles {
         this.t_name_tut="";
         this.t_surnames="";
         this.t_tel="";
+        this.id_rela_tut_inf = "";
+        this.id_ent_sal = "";
     }
     public Detalles(
             int i_id_inf,String i_name,String i_surnames,int i_age,String i_tel,
             String i_allergies ,String i_medical_service,String i_num_service ,
             String i_reg_date ,String i_image_path ,String de_obs , 
-            String t_id_tut ,String t_name_tut ,String t_surnames ,String t_tel
+            String t_id_tut ,String t_name_tut ,String t_surnames ,String t_tel,
+            String id_rela_tut_inf , String id_ent_sal
     ){
         this.i_id_inf=i_id_inf;
         this.i_name=i_name;
@@ -55,6 +60,8 @@ public class Detalles {
         this.t_name_tut=t_name_tut;
         this.t_surnames=t_surnames;
         this.t_tel=t_tel;
+        this.id_rela_tut_inf = id_rela_tut_inf;
+        this.id_ent_sal = id_ent_sal;
     }
     
 }

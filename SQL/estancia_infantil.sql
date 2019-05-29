@@ -1,3 +1,4 @@
+
 CREATE TABLE TUTORS
 (
 	id_tut               NUMBER(4) NOT NULL ,
@@ -44,13 +45,14 @@ CONSTRAINT R_6 FOREIGN KEY (id_inf) REFERENCES INFANT (id_inf)
 
 
 
+
+
 CREATE TABLE DAILY_DEPARTURES
 (
 	id_dep               NUMBER(4) NOT NULL ,
 	id_rela_tut_inf      NUMBER(4) NOT NULL ,
-	date_dep             CHAR(18) NULL ,
-	hour                 CHAR(18) NULL ,
-	obs                  CHAR(18) NULL ,
+	date_dep             DATE NOT NULL ,
+	obs                  VARCHAR2(200) NOT NULL ,
 CONSTRAINT  XPKDAILY_DEPARTURES PRIMARY KEY (id_dep),
 CONSTRAINT R_8 FOREIGN KEY (id_rela_tut_inf) REFERENCES INF_TUT (id_rela_tut_inf)
 );
@@ -61,9 +63,8 @@ CREATE TABLE DAILY_ENTRIES
 (
 	id_ent               NUMBER(4) NOT NULL ,
 	id_rela_tut_inf      NUMBER(4) NOT NULL ,
-	date_ent             CHAR(18) NULL ,
-	hour                 CHAR(18) NULL ,
-	obs                  CHAR(18) NULL ,
+	date_ent             DATE NOT NULL ,
+	obs                  VARCHAR2(200) NOT NULL ,
 CONSTRAINT  XPKDAILY_ENTRIES PRIMARY KEY (id_ent),
 CONSTRAINT R_7 FOREIGN KEY (id_rela_tut_inf) REFERENCES INF_TUT (id_rela_tut_inf)
 );

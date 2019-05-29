@@ -435,7 +435,7 @@ public class ConexionBaseDatos {
     public void ingresoNuevoHistorial(String id_inf,String id_tut){
         try {
             //Comprobamos que no se añada
-            if(this.comprobacionEntrada(id_inf)){
+            if(this.comprobacionEntradaSalida(id_inf,0)){
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 java.util.Date date = new java.util.Date();
                 String comando= "INSERT INTO DAILY_ENTRIES ( "
@@ -447,7 +447,31 @@ public class ConexionBaseDatos {
                 this.stmnt.executeQuery(comando);
                 this.exitoConsulta = true;
             }else{
-                JOptionPane.showMessageDialog(this.frame, "Ya se añadio a la lista");
+                JOptionPane.showMessageDialog(this.frame, "No se puede ingresar nuevamente");
+                this.exitoConsulta = false;
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+        }
+    }
+    
+    public void salidaNuevaHistorial(String id_inf,String id_tut){
+        try {
+            //Comprobamos que no se añada
+            if(this.comprobacionEntradaSalida(id_inf,1)){
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                java.util.Date date = new java.util.Date();
+                String comando= "INSERT INTO DAILY_DEPARTURES ( "
+                + "id_dep , id_rela_tut_inf , date_dep , obs ) "+
+                "VALUES( daly_dep_id_seq.nextval , "+this.idRelacionTutorInfante(id_inf, id_tut)+" , "+
+                " TO_DATE('"+dateFormat.format(date)+"', 'DD/MM/YYYY HH24:MI:SS'), ' ' ) "+
+                "  ";
+                this.stmnt.executeQuery(comando);
+                this.exitoConsulta = true;
+            }else{
+                JOptionPane.showMessageDialog(this.frame, "Ya se habia ido");
                 this.exitoConsulta = false;
             }
         } catch (Exception e) {
@@ -457,18 +481,29 @@ public class ConexionBaseDatos {
         }
     }
     //Esta funcion regresa un verdadero si el infante no se a añadido al dia de hoy
-    //a la lista de entradas
-    public boolean comprobacionEntrada(String id_inf) throws SQLException{
+    //a la lista de entradas o salidas
+    public boolean comprobacionEntradaSalida(String id_inf,int opc) throws SQLException{
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date date = new java.util.Date();
         
-        String comando = 
+        String comando = "";
+        if(opc==0){
+            comando = 
                 "SELECT COUNT(*) FROM DAILY_ENTRIES WHERE "+ 
                 " id_rela_tut_inf IN ("+ 
                 "SELECT id_rela_tut_inf FROM INF_TUT "+ 
                 "WHERE id_inf = "+id_inf+") and to_char(date_ent,'dd/MM/yyyy') = '"+
                 dateFormat.format(date)+"'"
                 ;
+        }else if(opc==1){
+            comando = 
+                "SELECT COUNT(*) FROM DAILY_DEPARTURES WHERE "+ 
+                " id_rela_tut_inf IN ("+ 
+                "SELECT id_rela_tut_inf FROM INF_TUT "+ 
+                "WHERE id_inf = "+id_inf+") and to_char(date_dep,'dd/MM/yyyy') = '"+
+                dateFormat.format(date)+"'"
+                ;
+        }
         ResultSet rs = this.stmnt.executeQuery(comando);
 
         int comprovacion = 0;
@@ -495,12 +530,13 @@ public class ConexionBaseDatos {
         return id_rela_tut_inf;
     }
     
-    public ListaAsistencia obtenerListaAsistenciaActual(){
+    public ListaAsistencia obtenerListaAsistenciaActual(int opc){
         ListaAsistencia listaNueva = new ListaAsistencia(4000);
         try{
-            ResultSet rs = this.stmnt.executeQuery(
-                    "SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service\n" +
-                "    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel\n" +
+            String comando = "";
+            if(opc==0){
+                comando = "SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service " +
+                "    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel ,it.id_rela_tut_inf , de.id_ent " +
                 "FROM DAILY_ENTRIES de " +
                 "JOIN INF_TUT it " +
                 "ON(de.id_rela_tut_inf=it.id_rela_tut_inf) " +
@@ -524,8 +560,23 @@ public class ConexionBaseDatos {
                 "            FROM dual " +
                 "        ) " +
                 "    ) " +
-                ") "
-            );
+                ") ";
+            }else if(opc==1){
+                comando = "SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service " +
+                "    , i.num_service , i.reg_date , i.image_path , dd.obs , t.id_tut , t.name_tut , t.surnames , t.tel ,dd.id_rela_tut_inf , dd.id_dep " +
+                "FROM DAILY_DEPARTURES dd " +
+                "JOIN INF_TUT it " +
+                "ON(dd.id_rela_tut_inf=it.id_rela_tut_inf) " +
+                "JOIN INFANT i " +
+                "ON(it.id_inf=i.id_inf) " +
+                "JOIN TUTORS t " +
+                "ON(it.id_tut=t.id_tut) " +
+                "WHERE to_char(dd.date_dep,'dd/MM/yyyy') = ( " +
+                "    SELECT TO_CHAR(CURRENT_DATE, 'dd/MM/yyyy') " +
+                "    FROM dual " +
+                ") ";
+            }
+            ResultSet rs = this.stmnt.executeQuery(comando);
             ResultSetMetaData rsmd = rs.getMetaData();
             int cols = rsmd.getColumnCount();
             //Con esto controlo que lugar voy del arreglo de infantes
@@ -545,7 +596,8 @@ public class ConexionBaseDatos {
                         resultados[2], Integer.parseInt(resultados[3]) , 
                         resultados[4], resultados[5], resultados[6],resultados[7],
                         resultados[8], resultados[9], resultados[10],resultados[11],
-                        resultados[12], resultados[13], resultados[14]
+                        resultados[12], resultados[13], resultados[14], resultados[15],
+                        resultados[16]
                 );
                 listaNueva.detalles[listaNueva.numInf] = nuevoDetalle;
                 //Incrementamos el contador para guardarlo en una nueva casilla
@@ -559,6 +611,96 @@ public class ConexionBaseDatos {
             JOptionPane.showMessageDialog(this.frame, e);
             this.exitoConsulta = false;
             return listaNueva;
+        }
+    }
+    
+    public ListaAsistencia obtenerListaAsistenciaHistorial(String fecha,int opc){
+        ListaAsistencia listaNueva = new ListaAsistencia(4000);
+        try{
+            String comando = "";
+            if(opc==0){
+                comando = "SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service " +
+                "    , i.num_service , i.reg_date , i.image_path , de.obs , t.id_tut , t.name_tut , t.surnames , t.tel ,it.id_rela_tut_inf , de.id_ent " +
+                "FROM DAILY_ENTRIES de " +
+                "JOIN INF_TUT it " +
+                "ON(de.id_rela_tut_inf=it.id_rela_tut_inf) " +
+                "JOIN INFANT i " +
+                "ON(it.id_inf=i.id_inf) " +
+                "JOIN TUTORS t " +
+                "ON(it.id_tut=t.id_tut) " +
+                "WHERE to_char(DE.date_ent,'dd/MM/yyyy') = '"+fecha+"' "+
+                " ";
+            }else if(opc==1){
+                comando = "SELECT i.id_inf , i.name , i.surnames , i.age , i.tel , i.allergies , i.medical_service " +
+                "    , i.num_service , i.reg_date , i.image_path , dd.obs , t.id_tut , t.name_tut , t.surnames , t.tel ,dd.id_rela_tut_inf , dd.id_dep " +
+                "FROM DAILY_DEPARTURES dd " +
+                "JOIN INF_TUT it " +
+                "ON(dd.id_rela_tut_inf=it.id_rela_tut_inf) " +
+                "JOIN INFANT i " +
+                "ON(it.id_inf=i.id_inf) " +
+                "JOIN TUTORS t " +
+                "ON(it.id_tut=t.id_tut) " +
+                 "WHERE to_char(dd.date_dep,'dd/MM/yyyy') = '"+fecha+"' "+
+                " ";
+            }
+            ResultSet rs = this.stmnt.executeQuery(comando);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cols = rsmd.getColumnCount();
+            //Con esto controlo que lugar voy del arreglo de infantes
+            listaNueva.numInf = 0;
+            //Variable para hacer el parseo de objeto a String en una linea
+            String[] resultados = new String[cols];
+            Object[] obj = new Object[cols];
+            while( rs.next() && listaNueva.numInf < listaNueva.maxInf ) {
+                for (int i = 0; i < cols; i++) {
+                    obj[i] = rs.getObject(i + 1);
+                    String data=new String(obj[i].toString());
+                    resultados[i] = data;
+                }
+                //Se crea un nuevo infante y se le pasa a su respectiva posicion
+                Detalles nuevoDetalle = new Detalles(
+                        Integer.parseInt(resultados[0]), resultados[1] ,
+                        resultados[2], Integer.parseInt(resultados[3]) , 
+                        resultados[4], resultados[5], resultados[6],resultados[7],
+                        resultados[8], resultados[9], resultados[10],resultados[11],
+                        resultados[12], resultados[13], resultados[14], resultados[15],
+                        resultados[16]
+                );
+                listaNueva.detalles[listaNueva.numInf] = nuevoDetalle;
+                //Incrementamos el contador para guardarlo en una nueva casilla
+                //Incrementamos el contador de tutores que existen
+                listaNueva.numInf++;
+            }
+            this.exitoConsulta = true;
+            return listaNueva;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
+            return listaNueva;
+        }
+    }
+    
+    //Esta funcion modifica un niño en la bdd segun su id_inf
+    public void modificarObservacionEntradaSalida(String id_ent_sal, String obs , int opc) {
+        try {
+            String comando = "";
+            if(opc==0){
+                comando = "UPDATE DAILY_ENTRIES "
+                    + "SET obs= '" + obs + "' "
+                    + "WHERE id_ent = " + id_ent_sal + " ";
+            }else if(opc==1){
+                comando = "UPDATE DAILY_DEPARTURES "
+                    + "SET obs= '" + obs + "' "
+                    + "WHERE id_dep = " + id_ent_sal + " ";
+            }
+            
+            this.stmnt.executeQuery(comando);
+            this.exitoConsulta = true;
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(this.frame, e);
+            this.exitoConsulta = false;
         }
     }
 }
