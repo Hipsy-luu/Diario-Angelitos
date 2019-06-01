@@ -1333,7 +1333,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     this.getFrame(), "Seleccione un dia por favor"
                 );
             }
-
         }
     }//GEN-LAST:event_cambiarVistaHistorialBtnActionPerformed
     //Nuevo método para conseguir el JFrame de la Ventana Principal
